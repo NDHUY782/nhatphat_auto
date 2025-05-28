@@ -1,0 +1,124 @@
+import dotenv from 'dotenv'
+import { Db, MongoClient, Collection, ServerApiVersion } from 'mongodb'
+import Appointment from '~/models/schemas/Appointment,Schema'
+import Blog from '~/models/schemas/Blog.Schema'
+import BlogPromotion from '~/models/schemas/Blog_Promotion.Schema'
+import Contact from '~/models/schemas/Contact.Schema'
+import Service from '~/models/schemas/Service.Schema'
+import User from '~/models/schemas/Users.Schema'
+
+dotenv.config()
+
+const url = process.env.MONGO_URL
+if (!url) {
+  throw new Error('MONGO_URL is not defined in the environment variables.')
+}
+
+const dbName = process.env.DB_NAME
+if (!dbName) {
+  throw new Error('DB_NAME is not defined in the environment variables.')
+}
+
+// const usersCollectionName = process.env.DB_USERS_COLLECTION
+// if (!usersCollectionName) {
+//   throw new Error('DB_USERS_COLLECTION is not defined in the environment variables.')
+// }
+
+class DatabaseService {
+  private client: MongoClient
+  private db: Db
+
+  constructor() {
+    this.client = new MongoClient(url as string, {
+      serverApi: ServerApiVersion.v1
+    })
+    this.db = this.client.db(dbName)
+  }
+
+  async connect() {
+    try {
+      await this.client.connect() // Kết nối tới MongoDB
+      await this.db.command({ ping: 1 })
+      console.log('Pinged your deployment. You successfully connected to MongoDB!')
+    } catch (err) {
+      console.error('Failed to connect to MongoDB:', err)
+      throw err
+    }
+  }
+
+  //   async indexBlogs() {
+  //     const exist = await this.blogs.indexExists(['email_1_password_1', 'email_1', 'username_1'])
+  //     if (!exist) {
+  //       this.users.createIndex({ email: 1, password: 1 })
+  //       this.users.createIndex({ email: 1 }, { unique: true })
+  //       this.users.createIndex({ username: 1 }, { unique: true })
+  //     }
+  //   }
+  // async indexBlogs() {
+  //   const exist = await this.blogs.indexExists(['author_id_1', 'created_at_1'])
+  //   if (!exist) {
+  //     await this.blogs.createIndex({ author_id: 1, created_at: 1 })
+  //   }
+  // }
+  // async indexBlogPromotions() {
+  //   const exist = await this.blogPromotions.indexExists(['author_id_1', 'created_at_1'])
+  //   if (!exist) {
+  //     await this.blogPromotions.createIndex({ author_id: 1, created_at: 1 })
+  //   }
+  // }
+  // async indexAppointments() {
+  //   const exist = await this.appointments.indexExists('phone_number_1_created_at_1')
+  //   if (!exist) {
+  //     await this.appointments.createIndex({ phone_number: 1, created_at: 1 })
+  //   }
+
+  //   const exist2 = await this.appointments.indexExists('center_id_1_expected_date_1')
+  //   if (!exist2) {
+  //     await this.appointments.createIndex({ center_id: 1, expected_date: 1 })
+  //   }
+  // }
+  // async indexContacts() {
+  //   const exist = await this.contacts.indexExists('email_1_created_at_1')
+  //   if (!exist) {
+  //     await this.contacts.createIndex({ email: 1, created_at: 1 })
+  //   }
+
+  //   const exist2 = await this.contacts.indexExists('phone_number_1')
+  //   if (!exist2) {
+  //     await this.contacts.createIndex({ phone_number: 1 })
+  //   }
+  // }
+  // async indexServices() {
+  //   const exist = await this.services.indexExists('name_1')
+  //   if (!exist) {
+  //     await this.services.createIndex({ name: 1 }, { unique: true })
+  //   }
+
+  //   const exist2 = await this.services.indexExists('author_id_1_created_at_1')
+  //   if (!exist2) {
+  //     await this.services.createIndex({ author_id: 1, created_at: 1 })
+  //   }
+  // }
+
+  get users(): Collection<User> {
+    return this.db.collection(process.env.DB_USERS_COLLECTION as string)
+  }
+  get blogs(): Collection<Blog> {
+    return this.db.collection(process.env.DB_BLOGS_COLLECTION as string)
+  }
+  get blogPromotions(): Collection<BlogPromotion> {
+    return this.db.collection(process.env.DB_BLOG_PROMOTIONS_COLLECTION as string)
+  }
+  get services(): Collection<Service> {
+    return this.db.collection(process.env.DB_SERVICES_COLLECTION as string)
+  }
+  get appointments(): Collection<Appointment> {
+    return this.db.collection(process.env.DB_APPOINTMENTS_COLLECTION as string)
+  }
+  get contacts(): Collection<Contact> {
+    return this.db.collection(process.env.DB_CONTACTS_COLLECTION as string)
+  }
+}
+
+const databaseService = new DatabaseService()
+export default databaseService
