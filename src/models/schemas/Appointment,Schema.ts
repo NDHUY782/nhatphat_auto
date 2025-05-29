@@ -9,7 +9,8 @@ interface AppointmentType {
   expected_time: string
   car_type: string
   services: ObjectId[]
-  center_id: ObjectId
+  center: string
+  status?: 'pending' | 'done' | 'cancelled'
   created_at?: Date
   updated_at?: Date
 }
@@ -23,7 +24,8 @@ export default class Appointment {
   expected_time: string
   car_type: string
   services: ObjectId[]
-  center_id: ObjectId
+  center: string
+  status: 'pending' | 'done' | 'cancelled' = 'pending'
   created_at: Date
   updated_at: Date
 
@@ -36,7 +38,8 @@ export default class Appointment {
     expected_time,
     car_type,
     services,
-    center_id,
+    center,
+    status = 'pending',
     created_at,
     updated_at
   }: AppointmentType) {
@@ -48,7 +51,8 @@ export default class Appointment {
     this.expected_time = expected_time
     this.car_type = car_type
     this.services = services || []
-    this.center_id = center_id
+    this.center = center
+    this.status = status
     this.created_at = created_at || new Date()
     this.updated_at = updated_at || new Date()
   }

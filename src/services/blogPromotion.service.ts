@@ -1,11 +1,12 @@
 import { ObjectId } from 'mongodb'
 import databaseService from '~/services/database.service'
-import { BlogRequestBody, UpdateBlogRequestBody } from '~/models/Requests/BlogRequest'
+import { UpdateBlogRequestBody } from '~/models/Requests/BlogRequest'
 import BlogPromotion from '~/models/schemas/Blog_Promotion.Schema'
+import { BlogPromotionRequestBody, UpdateBlogPromotionRequestBody } from '~/models/Requests/BlogPromotionRequest'
 
 class BlogPromotionService {
-  async createBlogPromotion(body: BlogRequestBody, admin_id: string) {
-    const blog = new BlogPromotion({
+  async createBlogPromotion(body: BlogPromotionRequestBody, admin_id: string) {
+    const blogPromotion = new BlogPromotion({
       author_id: new ObjectId(admin_id),
       title: body.title,
       name: body.name,
@@ -13,7 +14,8 @@ class BlogPromotionService {
       images: body.images || [],
       images_name: body.images_name || []
     })
-    return await databaseService.blogPromotions.insertOne(blog)
+    const result = await databaseService.blogPromotions.insertOne(blogPromotion)
+    return result
   }
 
   async getAllBlogPromotions({ limit, page }: { limit: number; page: number }) {
@@ -29,9 +31,9 @@ class BlogPromotionService {
     return await databaseService.blogPromotions.findOne({ _id: new ObjectId(blog_id) })
   }
 
-  async updateBlogPromotion(blog_id: string, body: UpdateBlogRequestBody) {
+  async updateBlogPromotion(blogPromotion_id: string, body: UpdateBlogPromotionRequestBody) {
     return await databaseService.blogPromotions.findOneAndUpdate(
-      { _id: new ObjectId(blog_id) },
+      { _id: new ObjectId(blogPromotion_id) },
       {
         $set: {
           title: body.title,
@@ -46,8 +48,8 @@ class BlogPromotionService {
     )
   }
 
-  async deleteBlogPromotion(blog_id: string) {
-    return await databaseService.blogPromotions.findOneAndDelete({ _id: new ObjectId(blog_id) })
+  async deleteBlogPromotion(blogPromotion_id: string) {
+    return await databaseService.blogPromotions.findOneAndDelete({ _id: new ObjectId(blogPromotion_id) })
   }
 }
 

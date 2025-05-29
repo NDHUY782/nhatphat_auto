@@ -5,41 +5,14 @@ import { BLogParams, BlogRequestBody, Pagination, UpdateBlogRequestBody } from '
 import { TokenPayload } from '~/models/requests/User.requests'
 import blogService from '~/services/blog.service'
 
-// export const createBlogController = async (
-//   req: Request<ParamsDictionary, any, BlogRequestBody>,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   const { admin_id } = req.decoded_authorization as TokenPayload
-//   const { images: imagesBase64, images_name, ...rest } = req.body
-
-//   const uploadedUrls: string[] = []
-//   // Upload từng ảnh lên cloudinary
-//   if (imagesBase64 && Array.isArray(imagesBase64)) {
-//     for (let i = 0; i < imagesBase64.length; i++) {
-//       const imageBase64 = imagesBase64[i]
-//       const imageName = images_name?.[i] || `blog-image-${Date.now()}-${i}`
-//       const uploadedUrl = await uploadCloudinary(imageBase64, imageName)
-//       uploadedUrls.push(uploadedUrl)
-//     }
-//   }
-
-//   const blog = await blogService.createBlog(
-//     {
-//       ...rest,
-//       images: uploadedUrls,
-//       images_name: images_name || []
-//     },
-//     admin_id
-//   )
-
-//   return res.json(blog)
-//   return res.json(blog)
-// }
-export const createBlogController = async (req: Request, res: Response, next: NextFunction) => {
+export const createBlogController = async (
+  req: Request<ParamsDictionary, any, any>,
+  res: Response,
+  next: NextFunction
+) => {
   const { admin_id } = req.decoded_authorization as TokenPayload
 
-  const { title, name, content } = req.body
+  const { title, name, content } = req.body as BlogRequestBody
   const images_name = JSON.parse(req.body.images_name || '[]')
   const files = req.files as Express.Multer.File[]
 
@@ -92,14 +65,36 @@ export const getBlogByIdController = async (
 }
 
 export const updateBlogController = async (
-  req: Request<ParamsDictionary, any, UpdateBlogRequestBody>,
+  req: Request<ParamsDictionary, any, any, UpdateBlogRequestBody>,
   res: Response,
   next: NextFunction
 ) => {
   const blog_id = req.params.blog_id
-  const updatedBlog = await blogService.updateBlog(blog_id, req.body)
+  const body = req.body as UpdateBlogRequestBody
+  const images_name = JSON.parse(req.body.images_name || '[]')
 
-  return res.json(updatedBlog)
+  const files = req.files as Express.Multer.File[]
+
+  let uploadedUrls: string[] = []
+
+  if (files && files.length > 0) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+      const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
+      const fileName = images_name[i] || `blog-promotion-image-${Date.now()}-${i}`
+      const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
+      uploadedUrls.push(uploadedUrl)
+    }
+  } else {
+    uploadedUrls = body.images || []
+  }
+  const result = await blogService.updateBlog(blog_id, {
+    ...body,
+    images: uploadedUrls,
+    images_name
+  })
+
+  return res.json(result)
 }
 export const deleteBlogController = async (
   req: Request<ParamsDictionary, any, any, BLogParams>,

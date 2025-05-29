@@ -1,41 +1,59 @@
 import { Request, Response, NextFunction } from 'express'
-import { ObjectId } from 'mongodb'
+import { ParamsDictionary } from 'express-serve-static-core'
 import { uploadCloudinary } from '~/constants/cloudinary'
-import { BlogRequestBody, UpdateBlogRequestBody } from '~/models/Requests/BlogRequest'
+import {
+  BlogPromotionParams,
+  BlogPromotionRequestBody,
+  UpdateBlogPromotionRequestBody
+} from '~/models/Requests/BlogPromotionRequest'
+import { Pagination } from '~/models/Requests/BlogRequest'
 import { TokenPayload } from '~/models/requests/User.requests'
 import blogPromotionService from '~/services/blogPromotion.service'
 
-export const createBlogPromotionController = async (req: Request, res: Response, next: NextFunction) => {
+export const createBlogPromotionController = async (
+  req: Request<ParamsDictionary, any, any>,
+  res: Response,
+  next: NextFunction
+) => {
   const { admin_id } = req.decoded_authorization as TokenPayload
-  const body = req.body as BlogRequestBody
+  const body = req.body as BlogPromotionRequestBody
 
-  const imageUrls: string[] = []
-  const imageNames: string[] = []
+  const images_name = JSON.parse(req.body.images_name || '[]')
+  const files = req.files as Express.Multer.File[]
 
-  if (req.files && Array.isArray(req.files)) {
-    for (const file of req.files) {
-      const base64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-      const url = await uploadCloudinary(base64, file.originalname)
-      imageUrls.push(url)
-      imageNames.push(file.originalname)
-    }
+  const uploadedUrls: string[] = []
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
+    const fileName = images_name[i] || `blog-image-${Date.now()}-${i}`
+    const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
+    uploadedUrls.push(uploadedUrl)
   }
 
   const result = await blogPromotionService.createBlogPromotion(
-    { ...body, images: imageUrls, images_name: imageNames },
+    { ...body, images: uploadedUrls, images_name },
     admin_id
   )
   return res.json(result)
 }
 
-export const getAllBlogPromotionsController = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllBlogPromotionsController = async (
+  req: Request<ParamsDictionary, any, any, Pagination>,
+  res: Response,
+  next: NextFunction
+) => {
   const limit = parseInt(req.query.limit as string) || 10
   const page = parseInt(req.query.page as string) || 1
   const result = await blogPromotionService.getAllBlogPromotions({ limit, page })
   return res.json(result)
 }
 
-export const getBlogPromotionByIdController = async (req: Request, res: Response, next: NextFunction) => {
+export const getBlogPromotionByIdController = async (
+  req: Request<ParamsDictionary>,
+  res: Response,
+  next: NextFunction
+) => {
   const blog_id = req.params.blog_id
   const blog = await blogPromotionService.getBlogPromotionById(blog_id)
   if (!blog) {
@@ -44,15 +62,57 @@ export const getBlogPromotionByIdController = async (req: Request, res: Response
   return res.json(blog)
 }
 
-export const updateBlogPromotionController = async (req: Request, res: Response, next: NextFunction) => {
-  const blog_id = req.params.blog_id
-  const result = await blogPromotionService.updateBlogPromotion(blog_id, req.body)
+// export const updateBlogPromotionController = async (
+//   req: Request<ParamsDictionary, any, UpdateBlogPromotionRequestBody>,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const blogPromotion_id = req.params.blogPromotion_id
+//   const result = await blogPromotionService.updateBlogPromotion(blogPromotion_id, req.body)
+//   return res.json(result)
+// }
+
+export const updateBlogPromotionController = async (
+  req: Request<ParamsDictionary, any, any, UpdateBlogPromotionRequestBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const blogPromotion_id = req.params.blogPromotion_id
+  const body = req.body as UpdateBlogPromotionRequestBody
+
+  const images_name = JSON.parse((req.body.images_name as string) || '[]') as string[]
+  const files = req.files as Express.Multer.File[]
+
+  let uploadedUrls: string[] = []
+
+  if (files && files.length > 0) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+      const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
+      const fileName = images_name[i] || `blog-promotion-image-${Date.now()}-${i}`
+      const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
+      uploadedUrls.push(uploadedUrl)
+    }
+  } else {
+    uploadedUrls = body.images || []
+  }
+
+  const result = await blogPromotionService.updateBlogPromotion(blogPromotion_id, {
+    ...body,
+    images: uploadedUrls,
+    images_name
+  })
+
   return res.json(result)
 }
 
-export const deleteBlogPromotionController = async (req: Request, res: Response, next: NextFunction) => {
-  const blog_id = req.params.blog_id
-  const result = await blogPromotionService.deleteBlogPromotion(blog_id)
+export const deleteBlogPromotionController = async (
+  req: Request<ParamsDictionary, any, any, BlogPromotionParams>,
+  res: Response,
+  next: NextFunction
+) => {
+  const blogPromotion_id = req.params.blogPromotion_id
+  const result = await blogPromotionService.deleteBlogPromotion(blogPromotion_id)
   if (!result) {
     return res.status(404).json({ message: 'Blog promotion not found' })
   }

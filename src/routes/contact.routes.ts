@@ -3,18 +3,22 @@ import {
   createContactController,
   deleteContactController,
   getAllContactsController,
-  markContactHandledController,
-  updateContactController
+  markContactHandledController
 } from '~/controller/contact.controller'
+import { accessTokenValidator, paginationValidator } from '~/middleware/users.middlewares'
 
 import { wrapAsync } from '~/utils/handlers'
 
 const contactRouter = Router()
 
+//For user
 contactRouter.post('/', wrapAsync(createContactController))
-contactRouter.get('/', wrapAsync(getAllContactsController))
-contactRouter.put('/:contact_id', wrapAsync(updateContactController))
-contactRouter.delete('/:contact_id', wrapAsync(deleteContactController))
-contactRouter.patch('/:contact_id/handled', wrapAsync(markContactHandledController))
+
+//For admin
+contactRouter.get('/', paginationValidator, accessTokenValidator, wrapAsync(getAllContactsController))
+
+contactRouter.delete('/:contact_id', accessTokenValidator, wrapAsync(deleteContactController))
+
+contactRouter.patch('/:contact_id/handled', accessTokenValidator, wrapAsync(markContactHandledController))
 
 export default contactRouter

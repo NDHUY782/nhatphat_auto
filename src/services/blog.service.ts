@@ -42,7 +42,7 @@ class BlogService {
   }
 
   async updateBlog(blog_id: string, body: UpdateBlogRequestBody) {
-    const blog = await databaseService.blogs.findOneAndUpdate(
+    const result = await databaseService.blogs.findOneAndUpdate(
       {
         _id: new ObjectId(blog_id)
       },
@@ -60,6 +60,7 @@ class BlogService {
         returnDocument: 'after'
       }
     )
+    return result
   }
 
   async deleteBlog(blog_id: string) {
