@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { AppointmentRequestBody, UpdateAppointmentRequestBody } from '~/models/Requests/AppointmentRequest'
+import { AppointmentRequestBody, UpdateAppointmentRequestBody } from '~/models/requests/AppointmentRequest'
 import Appointment from '~/models/schemas/Appointment,Schema'
 import databaseService from '~/services/database.service'
 

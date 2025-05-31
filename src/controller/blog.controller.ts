@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 import { uploadCloudinary } from '~/constants/cloudinary'
-import { BLogParams, BlogRequestBody, Pagination, UpdateBlogRequestBody } from '~/models/Requests/BlogRequest'
+import { BLogParams, BlogRequestBody, Pagination, UpdateBlogRequestBody } from '~/models/requests/BlogRequest'
 import { TokenPayload } from '~/models/requests/User.requests'
 import blogService from '~/services/blog.service'
 

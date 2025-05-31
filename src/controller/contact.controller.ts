@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import contactService from '~/services/contact.service'
 import { ParamsDictionary } from 'express-serve-static-core'
-import { ContactRequestBody } from '~/models/Requests/ContactRequest'
-import { Pagination } from '~/models/Requests/BlogRequest'
+import { ContactRequestBody } from '~/models/requests/ContactRequest'
+import { Pagination } from '~/models/requests/BlogRequest'
 
 export const createContactController = async (
   req: Request<ParamsDictionary, any, ContactRequestBody>,

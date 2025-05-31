@@ -46,59 +46,51 @@ class DatabaseService {
     }
   }
 
-  //   async indexBlogs() {
-  //     const exist = await this.blogs.indexExists(['email_1_password_1', 'email_1', 'username_1'])
-  //     if (!exist) {
-  //       this.users.createIndex({ email: 1, password: 1 })
-  //       this.users.createIndex({ email: 1 }, { unique: true })
-  //       this.users.createIndex({ username: 1 }, { unique: true })
-  //     }
-  //   }
-  // async indexBlogs() {
-  //   const exist = await this.blogs.indexExists(['author_id_1', 'created_at_1'])
-  //   if (!exist) {
-  //     await this.blogs.createIndex({ author_id: 1, created_at: 1 })
-  //   }
-  // }
-  // async indexBlogPromotions() {
-  //   const exist = await this.blogPromotions.indexExists(['author_id_1', 'created_at_1'])
-  //   if (!exist) {
-  //     await this.blogPromotions.createIndex({ author_id: 1, created_at: 1 })
-  //   }
-  // }
-  // async indexAppointments() {
-  //   const exist = await this.appointments.indexExists('phone_number_1_created_at_1')
-  //   if (!exist) {
-  //     await this.appointments.createIndex({ phone_number: 1, created_at: 1 })
-  //   }
+  async indexBlogs() {
+    const exist = await this.blogs.indexExists(['author_id_1', 'created_at_1'])
+    if (!exist) {
+      await this.blogs.createIndex({ author_id: 1, created_at: 1 })
+    }
+  }
+  async indexBlogPromotions() {
+    const exist = await this.blogPromotions.indexExists(['author_id_1', 'created_at_1'])
+    if (!exist) {
+      await this.blogPromotions.createIndex({ author_id: 1, created_at: 1 })
+    }
+  }
+  async indexAppointments() {
+    const exist = await this.appointments.indexExists('phone_number_1_created_at_1')
+    if (!exist) {
+      await this.appointments.createIndex({ phone_number: 1, created_at: 1 })
+    }
 
-  //   const exist2 = await this.appointments.indexExists('center_id_1_expected_date_1')
-  //   if (!exist2) {
-  //     await this.appointments.createIndex({ center_id: 1, expected_date: 1 })
-  //   }
-  // }
-  // async indexContacts() {
-  //   const exist = await this.contacts.indexExists('email_1_created_at_1')
-  //   if (!exist) {
-  //     await this.contacts.createIndex({ email: 1, created_at: 1 })
-  //   }
+    const exist2 = await this.appointments.indexExists('center_id_1_expected_date_1')
+    if (!exist2) {
+      await this.appointments.createIndex({ center_id: 1, expected_date: 1 })
+    }
+  }
+  async indexContacts() {
+    const exist = await this.contacts.indexExists('email_1_created_at_1')
+    if (!exist) {
+      await this.contacts.createIndex({ email: 1, created_at: 1 })
+    }
 
-  //   const exist2 = await this.contacts.indexExists('phone_number_1')
-  //   if (!exist2) {
-  //     await this.contacts.createIndex({ phone_number: 1 })
-  //   }
-  // }
-  // async indexServices() {
-  //   const exist = await this.services.indexExists('name_1')
-  //   if (!exist) {
-  //     await this.services.createIndex({ name: 1 }, { unique: true })
-  //   }
+    const exist2 = await this.contacts.indexExists('phone_number_1')
+    if (!exist2) {
+      await this.contacts.createIndex({ phone_number: 1 })
+    }
+  }
+  async indexServices() {
+    const exist = await this.services.indexExists('name_1')
+    if (!exist) {
+      await this.services.createIndex({ name: 1 }, { unique: true })
+    }
 
-  //   const exist2 = await this.services.indexExists('author_id_1_created_at_1')
-  //   if (!exist2) {
-  //     await this.services.createIndex({ author_id: 1, created_at: 1 })
-  //   }
-  // }
+    const exist2 = await this.services.indexExists('author_id_1_created_at_1')
+    if (!exist2) {
+      await this.services.createIndex({ author_id: 1, created_at: 1 })
+    }
+  }
 
   get users(): Collection<User> {
     return this.db.collection(process.env.DB_USERS_COLLECTION as string)

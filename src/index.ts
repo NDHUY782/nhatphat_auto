@@ -36,11 +36,11 @@ moment.tz.setDefault('Asia/Bangkok')
 
 // connectDB()
 databaseService.connect().then(() => {
-  // databaseService.indexBlogs()
-  // databaseService.indexBlogPromotions()
-  // databaseService.indexAppointments()
-  // databaseService.indexContacts()
-  // databaseService.indexServices()
+  databaseService.indexBlogs()
+  databaseService.indexBlogPromotions()
+  databaseService.indexAppointments()
+  databaseService.indexContacts()
+  databaseService.indexServices()
 })
 const app = express()
 
@@ -80,7 +80,7 @@ app.get('/', (_, res: Response) => {
 
 app.use('/api/admin', userRouter)
 app.use('/api/admin/blogs', blogRouter)
-app.use('/api/admin/blogs-promotion', blogPromotionRouter)
+app.use('/api/admin/promotion', blogPromotionRouter)
 app.use('/api/admin/services', serviceRouter)
 app.use('/api/admin/appointments', appointmentRouter)
 app.use('/api/admin/contact', contactRouter)

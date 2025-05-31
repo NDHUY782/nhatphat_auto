@@ -1,10 +1,11 @@
 import { ObjectId } from 'mongodb'
+import { ServiceRequestBody, UpdateServiceRequestBody } from '~/models/requests/ServiceRequest'
 import Service from '~/models/schemas/Service.Schema'
 import databaseService from '~/services/database.service'
 
 class ServiceService {
-  async createService(data: Omit<Service, '_id' | 'created_at' | 'updated_at'>) {
-    const service = new Service(data)
+  async createService(body: ServiceRequestBody) {
+    const service = new Service({ ...body })
     const result = await databaseService.services.insertOne(service)
     return result
   }
@@ -19,7 +20,7 @@ class ServiceService {
     return result
   }
 
-  async updateService(service_id: string, update: Partial<Service>) {
+  async updateService(service_id: string, update: UpdateServiceRequestBody) {
     const result = await databaseService.services.findOneAndUpdate(
       { _id: new ObjectId(service_id) },
       {

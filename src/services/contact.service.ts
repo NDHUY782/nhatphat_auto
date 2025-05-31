@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { ContactRequestBody } from '~/models/Requests/ContactRequest'
+import { ContactRequestBody } from '~/models/requests/ContactRequest'
 import Contact from '~/models/schemas/Contact.Schema'
 import databaseService from '~/services/database.service'
 

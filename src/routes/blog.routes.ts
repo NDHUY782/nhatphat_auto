@@ -20,7 +20,7 @@ blogRouter.get('/detail/:blog_id', accessTokenValidator, wrapAsync(getBlogByIdCo
 
 blogRouter.post('/', upload.array('images'), accessTokenValidator, wrapAsync(createBlogController))
 
-blogRouter.put('/:blog_id', accessTokenValidator, wrapAsync(updateBlogController))
+blogRouter.put('/:blog_id', upload.array('images'), accessTokenValidator, wrapAsync(updateBlogController))
 
 blogRouter.delete('/:blog_id', accessTokenValidator, wrapAsync(deleteBlogController))
 

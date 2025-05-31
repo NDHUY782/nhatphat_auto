@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { BlogRequestBody, UpdateBlogRequestBody } from '~/models/Requests/BlogRequest'
+import { BlogRequestBody, UpdateBlogRequestBody } from '~/models/requests/BlogRequest'
 import Blog from '~/models/schemas/Blog.Schema'
 import databaseService from '~/services/database.service'
 

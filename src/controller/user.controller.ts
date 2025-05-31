@@ -6,14 +6,11 @@ import { NextFunction, ParamsDictionary } from 'express-serve-static-core'
 
 import { ObjectId } from 'mongodb'
 import HTTP_STATUS from '~/constants/httpStatus'
-import { USERS_MESSAGES } from '~/constants/messages'
-import { UserVerifyStatus } from '~/constants/enums'
 import userService from '~/services/users.service'
 import {
   CreateAdminRequestBody,
   GetAdminByIdParams,
   LoginReqBody,
-  TokenPayload,
   UpdateAdminRequestBody
 } from '~/models/requests/User.requests'
 
@@ -46,7 +43,6 @@ export const createAdminController = async (
   return res.json(result)
 }
 export const getAllUsersController = async (req: Request, res: Response, next: NextFunction) => {
-  console.log('req.decoded_authorization', req.decoded_authorization)
   const users = await databaseService.users.find().toArray()
   return res.json({
     msg: 'Get all users successfully',

@@ -4,8 +4,8 @@ import {
   AppointmentParams,
   AppointmentRequestBody,
   UpdateAppointmentRequestBody
-} from '~/models/Requests/AppointmentRequest'
-import { Pagination } from '~/models/Requests/BlogRequest'
+} from '~/models/requests/AppointmentRequest'
+import { Pagination } from '~/models/requests/BlogRequest'
 import appointmentService from '~/services/appointment.service'
 
 export const createAppointmentController = async (

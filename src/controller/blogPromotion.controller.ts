@@ -5,8 +5,8 @@ import {
   BlogPromotionParams,
   BlogPromotionRequestBody,
   UpdateBlogPromotionRequestBody
-} from '~/models/Requests/BlogPromotionRequest'
-import { Pagination } from '~/models/Requests/BlogRequest'
+} from '~/models/requests/BlogPromotionRequest'
+import { Pagination } from '~/models/requests/BlogRequest'
 import { TokenPayload } from '~/models/requests/User.requests'
 import blogPromotionService from '~/services/blogPromotion.service'
 

@@ -1,8 +1,8 @@
 import { ObjectId } from 'mongodb'
 import databaseService from '~/services/database.service'
-import { UpdateBlogRequestBody } from '~/models/Requests/BlogRequest'
+import { UpdateBlogRequestBody } from '~/models/requests/BlogRequest'
 import BlogPromotion from '~/models/schemas/Blog_Promotion.Schema'
-import { BlogPromotionRequestBody, UpdateBlogPromotionRequestBody } from '~/models/Requests/BlogPromotionRequest'
+import { BlogPromotionRequestBody, UpdateBlogPromotionRequestBody } from '~/models/requests/BlogPromotionRequest'
 
 class BlogPromotionService {
   async createBlogPromotion(body: BlogPromotionRequestBody, admin_id: string) {
