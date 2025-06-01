@@ -54,8 +54,8 @@ export const getBlogPromotionByIdController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const blog_id = req.params.blog_id
-  const blog = await blogPromotionService.getBlogPromotionById(blog_id)
+  const blogPromotion_id = req.params.blogPromotion_id
+  const blog = await blogPromotionService.getBlogPromotionById(blogPromotion_id)
   if (!blog) {
     return res.status(404).json({ message: 'Blog promotion not found' })
   }
@@ -116,5 +116,7 @@ export const deleteBlogPromotionController = async (
   if (!result) {
     return res.status(404).json({ message: 'Blog promotion not found' })
   }
-  return res.json(result)
+  return res.json({
+    message: 'Blog promotion deleted successfully'
+  })
 }

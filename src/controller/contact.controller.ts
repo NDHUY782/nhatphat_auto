@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import contactService from '~/services/contact.service'
 import { ParamsDictionary } from 'express-serve-static-core'
-import { ContactRequestBody } from '~/models/requests/ContactRequest'
+import { ContactParams, ContactRequestBody } from '~/models/requests/ContactRequest'
 import { Pagination } from '~/models/requests/BlogRequest'
 
 export const createContactController = async (
@@ -29,14 +29,24 @@ export const getAllContactsController = async (
 //   const result = await contactService.updateContact(contact_id)
 //   return res.json(result)
 // }
-export const markContactHandledController = async (req: Request, res: Response, next: NextFunction) => {
-  const contact_id = req.body.contact_id
+export const markContactHandledController = async (
+  req: Request<ParamsDictionary, any, ContactParams>,
+  res: Response,
+  next: NextFunction
+) => {
+  const contact_id = req.params.contact_id
   const result = await contactService.markAsHandled(contact_id)
   return res.json(result)
 }
 
-export const deleteContactController = async (req: Request, res: Response, next: NextFunction) => {
-  const contact_id = req.body.contact_id
+export const deleteContactController = async (
+  req: Request<ParamsDictionary, any, ContactParams>,
+  res: Response,
+  next: NextFunction
+) => {
+  const contact_id = req.params.contact_id
   const result = await contactService.deleteContact(contact_id)
-  return res.json(result)
+  return res.json({
+    msg: 'Delete contact successfully'
+  })
 }

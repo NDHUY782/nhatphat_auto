@@ -22,7 +22,7 @@ const options = {
  */
 export const uploadCloudinary = async (imageBase64: string, fileName: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(imageBase64, { ...options, public_id: fileName }, (error, result) => {
+    cloudinary.uploader.upload(imageBase64, { ...options, public_id: fileName.trim() }, (error, result) => {
       if (result) {
         return resolve(result.secure_url)
       }

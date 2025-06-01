@@ -59,7 +59,9 @@ export const deleteAppointmentController = async (
 ) => {
   const appointment_id = req.params.appointment_id
   const result = await appointmentService.deleteAppointment(appointment_id)
-  return res.json(result)
+  return res.json({
+    msg: 'Delete appointment successfully'
+  })
 }
 
 export const markAppointmentDoneController = async (

@@ -17,15 +17,15 @@ blogPromotionRouter.post('/', upload.array('images'), accessTokenValidator, wrap
 
 blogPromotionRouter.get('/', paginationValidator, accessTokenValidator, wrapAsync(getAllBlogPromotionsController))
 
-blogPromotionRouter.get('/:blog_id', accessTokenValidator, wrapAsync(getBlogPromotionByIdController))
+blogPromotionRouter.get('/:blogPromotion_id', accessTokenValidator, wrapAsync(getBlogPromotionByIdController))
 
 blogPromotionRouter.put(
-  '/:blog_id',
+  '/:blogPromotion_id',
   upload.array('images'),
   accessTokenValidator,
   wrapAsync(updateBlogPromotionController)
 )
 
-blogPromotionRouter.delete('/:blog_id', accessTokenValidator, wrapAsync(deleteBlogPromotionController))
+blogPromotionRouter.delete('/:blogPromotion_id', accessTokenValidator, wrapAsync(deleteBlogPromotionController))
 
 export default blogPromotionRouter

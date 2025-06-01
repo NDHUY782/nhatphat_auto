@@ -82,5 +82,7 @@ export const deleteServiceController = async (
 ) => {
   const { service_id } = req.params
   const deleted = await serviceService.deleteService(service_id)
-  return res.json(deleted)
+  return res.json({
+    message: 'Service deleted successfully'
+  })
 }

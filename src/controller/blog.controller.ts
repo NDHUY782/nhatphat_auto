@@ -103,5 +103,7 @@ export const deleteBlogController = async (
 ) => {
   const blog_id = req.params.blog_id
   const result = await blogService.deleteBlog(blog_id)
-  return res.json(result)
+  return res.json({
+    msg: 'Delete blog successfully'
+  })
 }

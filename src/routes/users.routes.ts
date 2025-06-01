@@ -20,8 +20,8 @@ userRouter.post('/login', loginValidator, wrapAsync(loginController))
 
 userRouter.post('/create-admin', accessTokenValidator, createAdminValidator, wrapAsync(createAdminController))
 
-userRouter.get('/', accessTokenValidator, wrapAsync(getListAdminsController))
-userRouter.get('/:admin_id', accessTokenValidator, wrapAsync(getAdminByIdController))
+userRouter.get('/list-admin', accessTokenValidator, wrapAsync(getListAdminsController))
+userRouter.get('/admin/:admin_id', accessTokenValidator, wrapAsync(getAdminByIdController))
 userRouter.put('/update-admin/:admin_id', accessTokenValidator, isBoss, wrapAsync(updateAdminController))
 userRouter.delete('/delete-admin/:admin_id', accessTokenValidator, isBoss, wrapAsync(deleteAdminController))
 export default userRouter

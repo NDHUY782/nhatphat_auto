@@ -36,11 +36,11 @@ moment.tz.setDefault('Asia/Bangkok')
 
 // connectDB()
 databaseService.connect().then(() => {
-  databaseService.indexBlogs()
-  databaseService.indexBlogPromotions()
-  databaseService.indexAppointments()
-  databaseService.indexContacts()
-  databaseService.indexServices()
+  // databaseService.indexBlogs()
+  // databaseService.indexBlogPromotions()
+  // databaseService.indexAppointments()
+  // databaseService.indexContacts()
+  // databaseService.indexServices()
 })
 const app = express()
 

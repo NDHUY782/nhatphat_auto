@@ -85,5 +85,7 @@ export const deleteAdminController = async (req: Request<GetAdminByIdParams>, re
       msg: 'Admin not found'
     })
   }
-  return res.json(result)
+  return res.json({
+    msg: 'Delete admin successfully'
+  })
 }
