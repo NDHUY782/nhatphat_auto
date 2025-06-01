@@ -15,7 +15,7 @@ const serviceRouter = Router()
 
 serviceRouter.post('/', upload.array('images'), accessTokenValidator, wrapAsync(createServiceController))
 
-serviceRouter.get('/', paginationValidator, accessTokenValidator, wrapAsync(getAllServicesController))
+serviceRouter.get('/', paginationValidator, wrapAsync(getAllServicesController))
 
 serviceRouter.get('/:service_id', accessTokenValidator, wrapAsync(getServiceByIdController))
 

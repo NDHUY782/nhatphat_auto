@@ -14,7 +14,7 @@ import { wrapAsync, wrapRequestHandler, wrapRequest } from '~/utils/handlers'
 
 const blogRouter = Router()
 
-blogRouter.get('/all', paginationValidator, accessTokenValidator, wrapAsync(getAllBlogsController))
+blogRouter.get('/all', paginationValidator, wrapAsync(getAllBlogsController))
 
 blogRouter.get('/detail/:blog_id', accessTokenValidator, wrapAsync(getBlogByIdController))
 

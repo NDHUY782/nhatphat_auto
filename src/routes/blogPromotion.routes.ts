@@ -15,7 +15,7 @@ const blogPromotionRouter = Router()
 
 blogPromotionRouter.post('/', upload.array('images'), accessTokenValidator, wrapAsync(createBlogPromotionController))
 
-blogPromotionRouter.get('/', paginationValidator, accessTokenValidator, wrapAsync(getAllBlogPromotionsController))
+blogPromotionRouter.get('/', paginationValidator, wrapAsync(getAllBlogPromotionsController))
 
 blogPromotionRouter.get('/:blogPromotion_id', accessTokenValidator, wrapAsync(getBlogPromotionByIdController))
 
