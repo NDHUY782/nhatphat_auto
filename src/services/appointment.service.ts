@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb'
 import { AppointmentRequestBody, UpdateAppointmentRequestBody } from '~/models/requests/AppointmentRequest'
 import Appointment from '~/models/schemas/Appointment,Schema'
 import databaseService from '~/services/database.service'
+import { notifyAdminOnAppointment } from '~/utils/mailer'
 
 class AppointmentService {
   async createAppointment(body: AppointmentRequestBody) {
@@ -27,6 +28,10 @@ class AppointmentService {
       services: body.services.map((id) => new ObjectId(id)),
       center: body.center,
       status: body.status ?? 'pending'
+    })
+    await notifyAdminOnAppointment({
+      full_name: body.full_name,
+      phone_number: body.phone_number
     })
 
     return await databaseService.appointments.insertOne(appointment)

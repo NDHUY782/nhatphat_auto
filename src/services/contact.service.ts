@@ -2,10 +2,16 @@ import { ObjectId } from 'mongodb'
 import { ContactRequestBody } from '~/models/requests/ContactRequest'
 import Contact from '~/models/schemas/Contact.Schema'
 import databaseService from '~/services/database.service'
+import { notifyAdminOnContact } from '~/utils/mailer'
 
 class ContactService {
   async createContact(body: ContactRequestBody) {
     const contact = new Contact({ ...body, handled: false })
+    await notifyAdminOnContact({
+      full_name: body.full_name,
+      email: body.email,
+      phone_number: body.phone_number
+    })
     return await databaseService.contacts.insertOne(contact)
   }
 

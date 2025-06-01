@@ -10,6 +10,7 @@ export const createContactController = async (
   next: NextFunction
 ) => {
   const result = await contactService.createContact(req.body)
+
   return res.json(result)
 }
 
