@@ -17,7 +17,7 @@ serviceRouter.post('/', upload.array('images'), accessTokenValidator, wrapAsync(
 
 serviceRouter.get('/', paginationValidator, wrapAsync(getAllServicesController))
 
-serviceRouter.get('/:service_id', accessTokenValidator, wrapAsync(getServiceByIdController))
+serviceRouter.get('/:service_id', wrapAsync(getServiceByIdController))
 
 serviceRouter.put('/:service_id', upload.array('images'), accessTokenValidator, wrapAsync(updateServiceController))
 

@@ -17,7 +17,7 @@ blogPromotionRouter.post('/', upload.array('images'), accessTokenValidator, wrap
 
 blogPromotionRouter.get('/', paginationValidator, wrapAsync(getAllBlogPromotionsController))
 
-blogPromotionRouter.get('/:blogPromotion_id', accessTokenValidator, wrapAsync(getBlogPromotionByIdController))
+blogPromotionRouter.get('/:blogPromotion_id', wrapAsync(getBlogPromotionByIdController))
 
 blogPromotionRouter.put(
   '/:blogPromotion_id',

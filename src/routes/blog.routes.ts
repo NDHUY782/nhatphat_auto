@@ -16,7 +16,7 @@ const blogRouter = Router()
 
 blogRouter.get('/all', paginationValidator, wrapAsync(getAllBlogsController))
 
-blogRouter.get('/detail/:blog_id', accessTokenValidator, wrapAsync(getBlogByIdController))
+blogRouter.get('/detail/:blog_id', wrapAsync(getBlogByIdController))
 
 blogRouter.post('/', upload.array('images'), accessTokenValidator, wrapAsync(createBlogController))
 
