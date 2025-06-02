@@ -21,14 +21,17 @@ class BlogService {
   }
 
   async getAllBlogs({ limit, page }: { limit: number; page: number }) {
-    const result = await databaseService.blogs
-      .find()
-      .sort({ created_at: -1 })
-      .skip(limit * (page - 1))
-      .limit(limit)
-      .toArray()
+    const [data, total] = await Promise.all([
+      databaseService.blogs
+        .find()
+        .sort({ created_at: -1 })
+        .skip(limit * (page - 1))
+        .limit(limit)
+        .toArray(),
+      databaseService.blogs.countDocuments()
+    ])
 
-    return result
+    return { data, total, page, limit }
   }
 
   async getBlogById(blog_id: string) {

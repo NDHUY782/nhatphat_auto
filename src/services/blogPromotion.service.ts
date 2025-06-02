@@ -19,12 +19,17 @@ class BlogPromotionService {
   }
 
   async getAllBlogPromotions({ limit, page }: { limit: number; page: number }) {
-    return await databaseService.blogPromotions
-      .find()
-      .sort({ created_at: -1 })
-      .skip(limit * (page - 1))
-      .limit(limit)
-      .toArray()
+    const [data, total] = await Promise.all([
+      databaseService.blogPromotions
+        .find()
+        .sort({ created_at: -1 })
+        .skip(limit * (page - 1))
+        .limit(limit)
+        .toArray(),
+      databaseService.blogPromotions.countDocuments()
+    ])
+
+    return { data, total, page, limit }
   }
 
   async getBlogPromotionById(blog_id: string) {

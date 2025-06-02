@@ -16,12 +16,17 @@ class ContactService {
   }
 
   async getAllContacts({ limit, page }: { limit: number; page: number }) {
-    return await databaseService.contacts
-      .find()
-      .sort({ created_at: -1 })
-      .skip(limit * (page - 1))
-      .limit(limit)
-      .toArray()
+    const [data, total] = await Promise.all([
+      databaseService.contacts
+        .find()
+        .sort({ created_at: -1 })
+        .skip(limit * (page - 1))
+        .limit(limit)
+        .toArray(),
+      databaseService.contacts.countDocuments()
+    ])
+
+    return { data, total, page, limit }
   }
 
   // async updateContact(contact_id: string) {

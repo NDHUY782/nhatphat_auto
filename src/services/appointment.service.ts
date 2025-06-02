@@ -38,12 +38,22 @@ class AppointmentService {
   }
 
   async getAllAppointments({ limit, page }: { limit: number; page: number }) {
-    return await databaseService.appointments
-      .find()
-      .sort({ expected_date: 1, expected_time: 1 })
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .toArray()
+    const [appointments, total] = await Promise.all([
+      databaseService.appointments
+        .find()
+        .sort({ expected_date: 1, expected_time: 1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .toArray(),
+      databaseService.appointments.countDocuments()
+    ])
+
+    return {
+      data: appointments,
+      total,
+      page,
+      limit
+    }
   }
 
   async getAppointmentById(appointment_id: string) {
