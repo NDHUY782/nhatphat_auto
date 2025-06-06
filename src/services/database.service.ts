@@ -1,9 +1,13 @@
 import dotenv from 'dotenv'
 import { Db, MongoClient, Collection, ServerApiVersion } from 'mongodb'
+import Address from '~/models/schemas/Address.Schema'
 import Appointment from '~/models/schemas/Appointment,Schema'
 import Blog from '~/models/schemas/Blog.Schema'
 import BlogPromotion from '~/models/schemas/Blog_Promotion.Schema'
 import Contact from '~/models/schemas/Contact.Schema'
+import ContentAppointment from '~/models/schemas/ContentAppointment.Schema'
+import Logo from '~/models/schemas/Logo.Schema'
+import Reason from '~/models/schemas/Reason,Schema'
 import Service from '~/models/schemas/Service.Schema'
 import User from '~/models/schemas/Users.Schema'
 
@@ -109,6 +113,18 @@ class DatabaseService {
   }
   get contacts(): Collection<Contact> {
     return this.db.collection(process.env.DB_CONTACTS_COLLECTION as string)
+  }
+  get addresses(): Collection<Address> {
+    return this.db.collection(process.env.DB_ADDRESSES_COLLECTION as string)
+  }
+  get content_appointments(): Collection<ContentAppointment> {
+    return this.db.collection(process.env.DB_CONTENT_APPOINTMENTS_COLLECTION as string)
+  }
+  get logos(): Collection<Logo> {
+    return this.db.collection(process.env.DB_LOGOS_COLLECTION as string)
+  }
+  get reasons(): Collection<Reason> {
+    return this.db.collection(process.env.DB_REASONS_COLLECTION as string)
   }
 }
 

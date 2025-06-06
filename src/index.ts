@@ -23,6 +23,7 @@ import blogPromotionRouter from '~/routes/blogPromotion.routes'
 import serviceRouter from '~/routes/service.routes'
 import appointmentRouter from '~/routes/appointment.routes'
 import contactRouter from '~/routes/contact.routes'
+import homeRouter from '~/routes/home.routes'
 
 const router = Router()
 
@@ -79,6 +80,7 @@ app.get('/', (_, res: Response) => {
 })
 
 app.use('/api/admin', userRouter)
+app.use('/api/admin/home', homeRouter)
 app.use('/api/admin/blogs', blogRouter)
 app.use('/api/admin/promotion', blogPromotionRouter)
 app.use('/api/admin/services', serviceRouter)
