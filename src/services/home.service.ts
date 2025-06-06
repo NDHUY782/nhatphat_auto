@@ -3,11 +3,14 @@ import { AddressRequestBody } from '~/models/requests/Address.request'
 import { ContactRequestBody } from '~/models/requests/ContactRequest'
 import { ContentAppointmentRequestBody } from '~/models/requests/ContentAppointment.request'
 import { ReasonRequestBody, UpdateReasonRequestBody } from '~/models/requests/Reason.request'
+import { RepairCenterRequestBody } from '~/models/requests/RepairCenter.request'
 import Address from '~/models/schemas/Address.Schema'
+import Banner from '~/models/schemas/Banner.SChema'
 import Contact from '~/models/schemas/Contact.Schema'
 import ContentAppointment from '~/models/schemas/ContentAppointment.Schema'
 import Logo from '~/models/schemas/Logo.Schema'
 import Reason from '~/models/schemas/Reason,Schema'
+import RepairCenter from '~/models/schemas/RepairCenter.Schema'
 import databaseService from '~/services/database.service'
 import { notifyAdminOnContact } from '~/utils/mailer'
 
@@ -131,6 +134,55 @@ class HomeService {
     const result = await databaseService.addresses.deleteOne({ _id: new ObjectId(id) })
     if (result.deletedCount === 0) throw new Error('Address not found or already deleted')
     return { message: 'Address deleted successfully' }
+  }
+  async createBanner(images: string[]) {
+    const banner = new Banner({ images })
+    await databaseService.banners.insertOne(banner)
+    return banner
+  }
+
+  async getAllBanners() {
+    return await databaseService.banners.find().sort({ created_at: -1 }).toArray()
+  }
+
+  async updateBanner(id: string, images: string[]) {
+    const updated_at = new Date()
+    await databaseService.banners.updateOne({ _id: new ObjectId(id) }, { $set: { images, updated_at } })
+    return await databaseService.banners.findOne({ _id: new ObjectId(id) })
+  }
+
+  async deleteBanner(id: string) {
+    const result = await databaseService.banners.deleteOne({ _id: new ObjectId(id) })
+    if (result.deletedCount === 0) throw new Error('Banner not found or already deleted')
+    return { message: 'Banner deleted successfully' }
+  }
+  async createRepairCenter(data: RepairCenterRequestBody) {
+    const center = new RepairCenter({ name: data.name })
+    await databaseService.repair_centers.insertOne(center)
+    return center
+  }
+
+  async getAllRepairCenter() {
+    return await databaseService.repair_centers.find().sort({ created_at: -1 }).toArray()
+  }
+
+  async updateRepairCenter(id: string, data: RepairCenterRequestBody) {
+    await databaseService.repair_centers.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          name: data.name,
+          updated_at: new Date()
+        }
+      }
+    )
+    return await databaseService.repair_centers.findOne({ _id: new ObjectId(id) })
+  }
+
+  async deleteRepairCenter(id: string) {
+    const result = await databaseService.repair_centers.deleteOne({ _id: new ObjectId(id) })
+    if (result.deletedCount === 0) throw new Error('Repair center not found')
+    return { message: 'Deleted successfully' }
   }
 }
 

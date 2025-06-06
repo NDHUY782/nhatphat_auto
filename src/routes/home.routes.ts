@@ -1,15 +1,19 @@
 import { Router } from 'express'
 import {
   createAddressController,
+  createBannerController,
   createContentAppointmentController,
   createLogoController,
   createReasonController,
   deleteAddressController,
+  deleteBannerController,
   getAddressByIdController,
   getAllAddressesController,
+  getAllBannersController,
   getContentAppointmentController,
   getLogoController,
   updateAddressController,
+  updateBannerController,
   updateContentAppointmentController,
   updateLogoController,
   updateReasonController
@@ -39,5 +43,11 @@ homeRouter.get('/addresses', wrapAsync(getAllAddressesController))
 homeRouter.get('/addresses/:id', wrapAsync(getAddressByIdController))
 homeRouter.patch('/addresses/:id', accessTokenValidator, wrapAsync(updateAddressController))
 homeRouter.delete('/addresses/:id', accessTokenValidator, wrapAsync(deleteAddressController))
+
+// ----------- Banner (CRUD) -----------
+homeRouter.post('/banners', accessTokenValidator, wrapAsync(createBannerController))
+homeRouter.get('/banners', wrapAsync(getAllBannersController))
+homeRouter.patch('/banners/:id', accessTokenValidator, wrapAsync(updateBannerController))
+homeRouter.delete('/banners/:id', accessTokenValidator, wrapAsync(deleteBannerController))
 
 export default homeRouter

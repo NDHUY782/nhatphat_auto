@@ -13,6 +13,7 @@ import {
 import { UpdateAppointmentRequestBody } from '~/models/requests/AppointmentRequest'
 import { ReasonRequestBody, UpdateReasonRequestBody } from '~/models/requests/Reason.request'
 import { AddressRequestBody } from '~/models/requests/Address.request'
+import { RepairCenterRequestBody } from '~/models/requests/RepairCenter.request'
 
 export const createLogoController = async (req: Request<ParamsDictionary, any>, res: Response, next: NextFunction) => {
   const files = (req.files as Express.Multer.File[]) || []
@@ -207,4 +208,92 @@ export const deleteAddressController = async (req: Request<ParamsDictionary>, re
   const { id } = req.params
   const result = await homeService.deleteAddress(id)
   return res.json(result)
+}
+export const createBannerController = async (req: Request, res: Response, next: NextFunction) => {
+  const files = (req.files as Express.Multer.File[]) || []
+  const uploadedUrls: string[] = []
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
+    const fileName = `banner-${Date.now()}-${i}`
+    const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
+    uploadedUrls.push(uploadedUrl)
+  }
+
+  const banner = await homeService.createBanner(uploadedUrls)
+  return res.status(201).json({ message: 'Banner created successfully', banner })
+}
+
+export const getAllBannersController = async (req: Request, res: Response, next: NextFunction) => {
+  const result = await homeService.getAllBanners()
+  return res.json(result)
+}
+
+export const updateBannerController = async (req: Request<ParamsDictionary>, res: Response, next: NextFunction) => {
+  const { id } = req.params
+  const files = (req.files as Express.Multer.File[]) || []
+  const uploadedUrls: string[] = []
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
+    const fileName = `banner-${Date.now()}-${i}`
+    const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
+    uploadedUrls.push(uploadedUrl)
+  }
+
+  const updated = await homeService.updateBanner(id, uploadedUrls)
+  return res.json({ message: 'Banner updated successfully', banner: updated })
+}
+
+export const deleteBannerController = async (req: Request<ParamsDictionary>, res: Response, next: NextFunction) => {
+  const { id } = req.params
+  const result = await homeService.deleteBanner(id)
+  return res.json(result)
+}
+
+export const createRepairCenterController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = req.body as RepairCenterRequestBody
+    const result = await homeService.createRepairCenter(data)
+    return res.status(201).json({ message: 'Repair center created', center: result })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const getAllRepairCentersController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await homeService.getAllRepairCenter()
+    return res.json(result)
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const updateRepairCenterController = async (
+  req: Request<ParamsDictionary>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await homeService.updateRepairCenter(req.params.id, req.body as RepairCenterRequestBody)
+    return res.json({ message: 'Repair center updated', center: result })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const deleteRepairCenterController = async (
+  req: Request<ParamsDictionary>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await homeService.deleteRepairCenter(req.params.id)
+    return res.json(result)
+  } catch (err) {
+    next(err)
+  }
 }
