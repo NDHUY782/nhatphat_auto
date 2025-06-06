@@ -254,22 +254,14 @@ export const deleteBannerController = async (req: Request<ParamsDictionary>, res
 }
 
 export const createRepairCenterController = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const data = req.body as RepairCenterRequestBody
-    const result = await homeService.createRepairCenter(data)
-    return res.status(201).json({ message: 'Repair center created', center: result })
-  } catch (err) {
-    next(err)
-  }
+  const data = req.body as RepairCenterRequestBody
+  const result = await homeService.createRepairCenter(data)
+  return res.status(201).json({ message: 'Repair center created', center: result })
 }
 
 export const getAllRepairCentersController = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const result = await homeService.getAllRepairCenter()
-    return res.json(result)
-  } catch (err) {
-    next(err)
-  }
+  const result = await homeService.getAllRepairCenter()
+  return res.json(result)
 }
 
 export const updateRepairCenterController = async (
@@ -277,12 +269,8 @@ export const updateRepairCenterController = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const result = await homeService.updateRepairCenter(req.params.id, req.body as RepairCenterRequestBody)
-    return res.json({ message: 'Repair center updated', center: result })
-  } catch (err) {
-    next(err)
-  }
+  const result = await homeService.updateRepairCenter(req.params.id, req.body as RepairCenterRequestBody)
+  return res.json({ message: 'Repair center updated', center: result })
 }
 
 export const deleteRepairCenterController = async (
@@ -290,10 +278,6 @@ export const deleteRepairCenterController = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const result = await homeService.deleteRepairCenter(req.params.id)
-    return res.json(result)
-  } catch (err) {
-    next(err)
-  }
+  const result = await homeService.deleteRepairCenter(req.params.id)
+  return res.json(result)
 }

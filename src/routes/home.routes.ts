@@ -5,18 +5,22 @@ import {
   createContentAppointmentController,
   createLogoController,
   createReasonController,
+  createRepairCenterController,
   deleteAddressController,
   deleteBannerController,
+  deleteRepairCenterController,
   getAddressByIdController,
   getAllAddressesController,
   getAllBannersController,
+  getAllRepairCentersController,
   getContentAppointmentController,
   getLogoController,
   updateAddressController,
   updateBannerController,
   updateContentAppointmentController,
   updateLogoController,
-  updateReasonController
+  updateReasonController,
+  updateRepairCenterController
 } from '~/controller/home.controller'
 import { accessTokenValidator } from '~/middleware/users.middlewares'
 import { wrapAsync } from '~/utils/handlers'
@@ -49,5 +53,11 @@ homeRouter.post('/banners', accessTokenValidator, wrapAsync(createBannerControll
 homeRouter.get('/banners', wrapAsync(getAllBannersController))
 homeRouter.patch('/banners/:id', accessTokenValidator, wrapAsync(updateBannerController))
 homeRouter.delete('/banners/:id', accessTokenValidator, wrapAsync(deleteBannerController))
+
+// ----------- Repair Centers (CRUD - name only) -----------
+homeRouter.post('/repair-centers', accessTokenValidator, wrapAsync(createRepairCenterController))
+homeRouter.get('/repair-centers', wrapAsync(getAllRepairCentersController))
+homeRouter.patch('/repair-centers/:id', accessTokenValidator, wrapAsync(updateRepairCenterController))
+homeRouter.delete('/repair-centers/:id', accessTokenValidator, wrapAsync(deleteRepairCenterController))
 
 export default homeRouter
