@@ -116,7 +116,7 @@ class HomeService {
   }
 
   async getAllAddresses() {
-    return await databaseService.addresses.findOne()
+    return await databaseService.addresses.find().toArray()
   }
 
   async getAddressById(id: string) {
@@ -146,7 +146,7 @@ class HomeService {
   }
 
   async getAllBanners() {
-    return await databaseService.banners.findOne()
+    return await databaseService.banners.find().sort({ created_at: -1 }).toArray()
   }
 
   async updateBanner(id: string, images: string[]) {
@@ -167,7 +167,7 @@ class HomeService {
   }
 
   async getAllRepairCenter() {
-    return await databaseService.repair_centers.findOne()
+    return await databaseService.repair_centers.find().toArray()
   }
 
   async updateRepairCenter(id: string, data: RepairCenterRequestBody) {
