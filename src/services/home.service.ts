@@ -188,6 +188,21 @@ class HomeService {
     if (result.deletedCount === 0) throw new Error('Repair center not found')
     return { message: 'Deleted successfully' }
   }
+  async getDashboard() {
+    const blog_promotions = await databaseService.blogPromotions.countDocuments()
+    const blogs = await databaseService.blogs.countDocuments()
+    const appointments = await databaseService.appointments.countDocuments()
+    const contacts = await databaseService.contacts.countDocuments()
+    const services = await databaseService.services.countDocuments()
+
+    return {
+      blog_promotions,
+      blogs,
+      appointments,
+      contacts,
+      services
+    }
+  }
 }
 
 const homeService = new HomeService()

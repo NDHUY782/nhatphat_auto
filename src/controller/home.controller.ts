@@ -286,3 +286,10 @@ export const deleteRepairCenterController = async (
   const result = await homeService.deleteRepairCenter(req.params.id)
   return res.json(result)
 }
+
+export const getDashboardController = async ( req: Request<ParamsDictionary>,
+  res: Response,
+  next: NextFunction) => {
+    const result = await homeService.deleteRepairCenter(req.params.id)
+    return res.json(result) 
+}
