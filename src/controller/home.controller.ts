@@ -180,6 +180,11 @@ export const updateReasonController = async (req: Request<ParamsDictionary>, res
     reason: updated
   })
 }
+export const getReasonController = async (req: Request, res: Response, next: NextFunction) => {{
+  const result = await homeService.getAllReasons()
+  return res.json(result)
+}}
+
 export const createAddressController = async (req: Request, res: Response, next: NextFunction) => {
   const { address } = req.body as AddressRequestBody
   const result = await homeService.createAddress({ address })

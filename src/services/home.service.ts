@@ -111,8 +111,12 @@ class HomeService {
     return addressEntity
   }
 
+  async getAllReasons() {
+    return await databaseService.reasons.findOne()
+  }
+
   async getAllAddresses() {
-    return await databaseService.addresses.find().sort({ created_at: -1 }).toArray()
+    return await databaseService.addresses.findOne()
   }
 
   async getAddressById(id: string) {
@@ -142,7 +146,7 @@ class HomeService {
   }
 
   async getAllBanners() {
-    return await databaseService.banners.find().sort({ created_at: -1 }).toArray()
+    return await databaseService.banners.findOne()
   }
 
   async updateBanner(id: string, images: string[]) {
@@ -163,7 +167,7 @@ class HomeService {
   }
 
   async getAllRepairCenter() {
-    return await databaseService.repair_centers.find().sort({ created_at: -1 }).toArray()
+    return await databaseService.repair_centers.findOne()
   }
 
   async updateRepairCenter(id: string, data: RepairCenterRequestBody) {
