@@ -180,10 +180,12 @@ export const updateReasonController = async (req: Request<ParamsDictionary>, res
     reason: updated
   })
 }
-export const getReasonController = async (req: Request, res: Response, next: NextFunction) => {{
-  const result = await homeService.getAllReasons()
-  return res.json(result)
-}}
+export const getReasonController = async (req: Request, res: Response, next: NextFunction) => {
+  {
+    const result = await homeService.getAllReasons()
+    return res.json(result)
+  }
+}
 
 export const createAddressController = async (req: Request, res: Response, next: NextFunction) => {
   const { address } = req.body as AddressRequestBody
@@ -287,9 +289,7 @@ export const deleteRepairCenterController = async (
   return res.json(result)
 }
 
-export const getDashboardController = async ( req: Request<ParamsDictionary>,
-  res: Response,
-  next: NextFunction) => {
-    const result = await homeService.deleteRepairCenter(req.params.id)
-    return res.json(result) 
+export const getDashboardController = async (req: Request<ParamsDictionary>, res: Response, next: NextFunction) => {
+  const result = await homeService.getDashboard()
+  return res.json(result)
 }

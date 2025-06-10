@@ -30,19 +30,29 @@ import { wrapAsync } from '~/utils/handlers'
 const homeRouter = Router()
 
 // ----------- Logo -----------
-homeRouter.post('/logo',upload.array('images'),  accessTokenValidator, wrapAsync(createLogoController))
-homeRouter.patch('/logo',upload.array('images'),  accessTokenValidator, wrapAsync(updateLogoController))
+homeRouter.post('/logo', upload.array('images'), accessTokenValidator, wrapAsync(createLogoController))
+homeRouter.patch('/logo', upload.array('images'), accessTokenValidator, wrapAsync(updateLogoController))
 homeRouter.get('/logo', wrapAsync(getLogoController))
 
 // ----------- Content Appointment (only 1) -----------
-homeRouter.post('/content-appointment',upload.array('images'),  accessTokenValidator, wrapAsync(createContentAppointmentController))
-homeRouter.patch('/content-appointment/:id',upload.array('images'),  accessTokenValidator, wrapAsync(updateContentAppointmentController))
+homeRouter.post(
+  '/content-appointment',
+  upload.array('images'),
+  accessTokenValidator,
+  wrapAsync(createContentAppointmentController)
+)
+homeRouter.patch(
+  '/content-appointment/:id',
+  upload.array('images'),
+  accessTokenValidator,
+  wrapAsync(updateContentAppointmentController)
+)
 homeRouter.get('/content-appointment', wrapAsync(getContentAppointmentController))
 
 // ----------- Reason (only 1) -----------
-homeRouter.post('/reason',upload.array('images'),  accessTokenValidator, wrapAsync(createReasonController))
+homeRouter.post('/reason', upload.array('images'), accessTokenValidator, wrapAsync(createReasonController))
 homeRouter.get('/reason', wrapAsync(getReasonController))
-homeRouter.patch('/reason/:id',upload.array('images'),  accessTokenValidator, wrapAsync(updateReasonController))
+homeRouter.patch('/reason/:id', upload.array('images'), accessTokenValidator, wrapAsync(updateReasonController))
 
 // ----------- Address (full CRUD) -----------
 homeRouter.post('/addresses', accessTokenValidator, wrapAsync(createAddressController))
@@ -52,9 +62,9 @@ homeRouter.patch('/addresses/:id', accessTokenValidator, wrapAsync(updateAddress
 homeRouter.delete('/addresses/:id', accessTokenValidator, wrapAsync(deleteAddressController))
 
 // ----------- Banner (CRUD) -----------
-homeRouter.post('/banners',upload.array('images'),  accessTokenValidator, wrapAsync(createBannerController))
+homeRouter.post('/banners', upload.array('images'), accessTokenValidator, wrapAsync(createBannerController))
 homeRouter.get('/banners', wrapAsync(getAllBannersController))
-homeRouter.patch('/banners/:id',upload.array('images'),  accessTokenValidator, wrapAsync(updateBannerController))
+homeRouter.patch('/banners/:id', upload.array('images'), accessTokenValidator, wrapAsync(updateBannerController))
 homeRouter.delete('/banners/:id', accessTokenValidator, wrapAsync(deleteBannerController))
 
 // ----------- Repair Centers (CRUD - name only) -----------

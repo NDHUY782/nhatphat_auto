@@ -7,7 +7,9 @@ import Blog from '~/models/schemas/Blog.Schema'
 import BlogPromotion from '~/models/schemas/Blog_Promotion.Schema'
 import Contact from '~/models/schemas/Contact.Schema'
 import ContentAppointment from '~/models/schemas/ContentAppointment.Schema'
+import Intro from '~/models/schemas/Intro.Schema'
 import Logo from '~/models/schemas/Logo.Schema'
+import Poster from '~/models/schemas/Poster.Schema'
 import Reason from '~/models/schemas/Reason,Schema'
 import RepairCenter from '~/models/schemas/RepairCenter.Schema'
 import Service from '~/models/schemas/Service.Schema'
@@ -133,6 +135,12 @@ class DatabaseService {
   }
   get repair_centers(): Collection<RepairCenter> {
     return this.db.collection(process.env.DB_REPAIR_CENTER_COLLECTION as string)
+  }
+  get intro(): Collection<Intro> {
+    return this.db.collection(process.env.DB_INTRO_COLLECTION as string)
+  }
+  get posters(): Collection<Poster> {
+    return this.db.collection(process.env.DB_POSTERS_COLLECTION as string)
   }
 }
 
