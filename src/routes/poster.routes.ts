@@ -14,7 +14,7 @@ const posterRouter = Router()
 // ----------- Poster (CRUD) -----------
 posterRouter.post(
   '/',
-  upload.fields([{ name: 'images_intro' }, { name: 'images_contract' }, { name: 'images_advise' }]),
+  upload.fields([{ name: 'images_intro' }, { name: 'images_contact' }, { name: 'images_advise' }]),
   accessTokenValidator,
   wrapAsync(createPosterController)
 )
@@ -23,7 +23,7 @@ posterRouter.get('/', wrapAsync(getPosterController))
 
 posterRouter.patch(
   '/:id',
-  upload.fields([{ name: 'images_intro' }, { name: 'images_contract' }, { name: 'images_advise' }]),
+  upload.fields([{ name: 'images_intro' }, { name: 'images_contact' }, { name: 'images_advise' }]),
   accessTokenValidator,
   wrapAsync(updatePosterController)
 )

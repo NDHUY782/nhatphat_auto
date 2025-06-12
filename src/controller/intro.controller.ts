@@ -35,8 +35,24 @@ export const getIntroByIdController = async (req: Request, res: Response, next: 
 }
 
 export const updateIntroController = async (req: Request, res: Response, next: NextFunction) => {
-  const updated = await introService.updateIntro(req.params.id, req.body)
-  return res.json(updated)
+  const files = (req.files as Express.Multer.File[]) || []
+  const uploadedUrls: string[] = []
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
+    const fileName = `intro-${Date.now()}-${i}`
+    const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
+    uploadedUrls.push(uploadedUrl)
+  }
+  const result = await introService.updateIntro(req.params.id, {
+    title: req.body.title,
+    name: req.body.name,
+    content: req.body.content,
+    images: uploadedUrls
+  })
+
+  return res.json(result)
 }
 
 export const deleteIntroController = async (req: Request, res: Response, next: NextFunction) => {

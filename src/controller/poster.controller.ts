@@ -3,26 +3,37 @@ import { uploadCloudinary } from '~/constants/cloudinary'
 import posterService from '~/services/poster.service'
 
 // ----------- CREATE -----------
+
 export const createPosterController = async (req: Request, res: Response, next: NextFunction) => {
-  const files = req.files as Express.Multer.File[]
+  // Sử dụng Record để dễ duyệt và truy cập key động
+  const files = req.files as Record<string, Express.Multer.File[]>
+
   const introImages: string[] = []
-  const contractImages: string[] = []
+  const contactImages: string[] = []
   const adviseImages: string[] = []
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i]
-    const fieldname = file.fieldname
+  // Map fieldname -> biến lưu ảnh tương ứng
+  const fieldMapping: { field: string; target: string[] }[] = [
+    { field: 'images_intro', target: introImages },
+    { field: 'images_contact', target: contactImages },
+    { field: 'images_advise', target: adviseImages }
+  ]
+
+  for (const { field, target } of fieldMapping) {
+    const fileArray = files?.[field]
+
+    if (!fileArray || fileArray.length !== 1) {
+      return res.status(400).json({ message: `Trường '${field}' phải có đúng 1 ảnh.` })
+    }
+
+    const file = fileArray[0]
     const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-    const uploadedUrl = await uploadCloudinary(imageBase64, `poster-${fieldname}-${Date.now()}-${i}`)
-
-    if (fieldname === 'images_intro') introImages.push(uploadedUrl)
-    else if (fieldname === 'images_contract') contractImages.push(uploadedUrl)
-    else if (fieldname === 'images_advise') adviseImages.push(uploadedUrl)
+    const uploadedUrl = await uploadCloudinary(imageBase64, `poster-${field}-${Date.now()}`)
+    target.push(uploadedUrl)
   }
-
   const result = await posterService.createPoster({
     images_intro: introImages,
-    images_contract: contractImages,
+    images_contact: contactImages,
     images_advise: adviseImages
   })
 
@@ -37,35 +48,41 @@ export const getPosterController = async (req: Request, res: Response, next: Nex
     return res.status(404).json({ message: 'Poster not found' })
   }
 
-  return res.json({
-    intro: poster.images_intro?.[0] || null,
-    contract: poster.images_contract?.[0] || null,
-    advise: poster.images_advise?.[0] || null
-  })
+  return res.json(poster)
 }
 
 // ----------- UPDATE -----------
 export const updatePosterController = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
-  const files = req.files as Express.Multer.File[]
+  const files = req.files as Record<string, Express.Multer.File[]>
+
   const introImages: string[] = []
-  const contractImages: string[] = []
+  const contactImages: string[] = []
   const adviseImages: string[] = []
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i]
-    const fieldname = file.fieldname
-    const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-    const uploadedUrl = await uploadCloudinary(imageBase64, `poster-${fieldname}-${Date.now()}-${i}`)
+  // Map fieldname -> biến lưu ảnh tương ứng
+  const fieldMapping: { field: string; target: string[] }[] = [
+    { field: 'images_intro', target: introImages },
+    { field: 'images_contact', target: contactImages },
+    { field: 'images_advise', target: adviseImages }
+  ]
 
-    if (fieldname === 'images_intro') introImages.push(uploadedUrl)
-    else if (fieldname === 'images_contract') contractImages.push(uploadedUrl)
-    else if (fieldname === 'images_advise') adviseImages.push(uploadedUrl)
+  for (const { field, target } of fieldMapping) {
+    const fileArray = files?.[field]
+
+    if (!fileArray || fileArray.length !== 1) {
+      return res.status(400).json({ message: `Trường '${field}' phải có đúng 1 ảnh.` })
+    }
+
+    const file = fileArray[0]
+    const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
+    const uploadedUrl = await uploadCloudinary(imageBase64, `poster-${field}-${Date.now()}`)
+    target.push(uploadedUrl)
   }
 
   const result = await posterService.updatePoster(id, {
     images_intro: introImages,
-    images_contract: contractImages,
+    images_contact: contactImages,
     images_advise: adviseImages
   })
 

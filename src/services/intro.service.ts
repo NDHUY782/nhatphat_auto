@@ -18,7 +18,7 @@ class IntroService {
     return introCollection.findOne({ _id: new ObjectId(id) })
   }
 
-  async updateIntro(id: string, data: Partial<IntroType>) {
+  async updateIntro(id: string, data: IntroType) {
     await introCollection.updateOne(
       { _id: new ObjectId(id) },
       {
