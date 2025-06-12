@@ -14,6 +14,7 @@ import {
   getAllBannersController,
   getAllRepairCentersController,
   getContentAppointmentController,
+  getDashboardController,
   getLogoController,
   getReasonController,
   updateAddressController,
@@ -28,6 +29,9 @@ import { accessTokenValidator } from '~/middleware/users.middlewares'
 import { wrapAsync } from '~/utils/handlers'
 
 const homeRouter = Router()
+
+// ----------- Dashboard -----------
+homeRouter.get('/dashboard', wrapAsync(getDashboardController))
 
 // ----------- Logo -----------
 homeRouter.post('/logo', upload.array('images'), accessTokenValidator, wrapAsync(createLogoController))
