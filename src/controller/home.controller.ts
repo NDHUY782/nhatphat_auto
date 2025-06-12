@@ -217,19 +217,21 @@ export const deleteAddressController = async (req: Request<ParamsDictionary>, re
   return res.json(result)
 }
 export const createBannerController = async (req: Request, res: Response, next: NextFunction) => {
+  const images_name = JSON.parse(req.body.images_name || '[]')
   const files = (req.files as Express.Multer.File[]) || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-    const fileName = `banner-${Date.now()}-${i}`
+    const fileName = images_name[i] || `banner-images-${Date.now()}-${i}`
     const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
     uploadedUrls.push(uploadedUrl)
   }
 
-  const banner = await homeService.createBanner(uploadedUrls)
-  return res.status(201).json({ message: 'Banner created successfully', banner })
+  const banner = await homeService.createBanner({ images: uploadedUrls, images_name })
+
+  return res.json({ message: 'Banner created successfully', banner })
 }
 
 export const getAllBannersController = async (req: Request, res: Response, next: NextFunction) => {
@@ -239,18 +241,23 @@ export const getAllBannersController = async (req: Request, res: Response, next:
 
 export const updateBannerController = async (req: Request<ParamsDictionary>, res: Response, next: NextFunction) => {
   const { id } = req.params
+  const images_name = JSON.parse(req.body.images_name || '[]')
   const files = (req.files as Express.Multer.File[]) || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-    const fileName = `banner-${Date.now()}-${i}`
+    const fileName = images_name[i] || `banner-images-${Date.now()}-${i}`
     const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
     uploadedUrls.push(uploadedUrl)
   }
 
-  const updated = await homeService.updateBanner(id, uploadedUrls)
+  const updated = await homeService.updateBanner({
+    id,
+    images: uploadedUrls,
+    images_name
+  })
   return res.json({ message: 'Banner updated successfully', banner: updated })
 }
 

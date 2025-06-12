@@ -13,13 +13,29 @@ import { wrapAsync } from '~/utils/handlers'
 
 const serviceRouter = Router()
 
-serviceRouter.post('/', upload.array('images'), accessTokenValidator, wrapAsync(createServiceController))
+serviceRouter.post(
+  '/',
+  upload.fields([
+    { name: 'images', maxCount: 10 },
+    { name: 'extra_images', maxCount: 10 }
+  ]),
+  accessTokenValidator,
+  wrapAsync(createServiceController)
+)
 
 serviceRouter.get('/', paginationValidator, wrapAsync(getAllServicesController))
 
 serviceRouter.get('/:service_id', wrapAsync(getServiceByIdController))
 
-serviceRouter.put('/:service_id', upload.array('images'), accessTokenValidator, wrapAsync(updateServiceController))
+serviceRouter.put(
+  '/:service_id',
+  upload.fields([
+    { name: 'images', maxCount: 10 },
+    { name: 'extra_images', maxCount: 10 }
+  ]),
+  accessTokenValidator,
+  wrapAsync(updateServiceController)
+)
 
 serviceRouter.delete('/:service_id', accessTokenValidator, wrapAsync(deleteServiceController))
 

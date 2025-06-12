@@ -7,6 +7,8 @@ export interface ServiceRequestBody {
   price: string
   images: string[]
   images_name?: string[]
+  extra_images?: string[]
+  extra_images_text?: string[]
   author_id: ObjectId
 }
 export interface UpdateServiceRequestBody {
@@ -15,6 +17,8 @@ export interface UpdateServiceRequestBody {
   price?: string
   images?: string[]
   images_name?: string[]
+  extra_images?: string[]
+  extra_images_text?: string[]
 }
 export interface ServiceParams extends ParamsDictionary {
   service_id: string

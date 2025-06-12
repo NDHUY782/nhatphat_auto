@@ -5,8 +5,10 @@ interface ServiceType {
   name: string
   content: string
   price: string
-  images: string[]
+  images?: string[]
   images_name?: string[]
+  extra_images?: string[]
+  extra_images_text?: string[]
   author_id: ObjectId
   created_at?: Date
   updated_at?: Date
@@ -19,16 +21,32 @@ export default class Service {
   price: string
   images: string[] = []
   images_name: string[] = []
-  created_at?: Date
-  updated_at?: Date
-  constructor({ _id, author_id, name, content, price, images, images_name, created_at, updated_at }: ServiceType) {
+  extra_images: string[] = []
+  extra_images_text: string[] = []
+  created_at: Date
+  updated_at: Date
+  constructor({
+    _id,
+    author_id,
+    name,
+    content,
+    price,
+    images,
+    images_name,
+    extra_images,
+    extra_images_text,
+    created_at,
+    updated_at
+  }: ServiceType) {
     this._id = _id || new ObjectId()
     this.author_id = author_id
     this.name = name
     this.content = content
-    this.price = price || '0'
+    this.price = price
     this.images = images || []
     this.images_name = images_name || []
+    this.extra_images = extra_images || []
+    this.extra_images_text = extra_images_text || []
     this.created_at = created_at || new Date()
     this.updated_at = updated_at || new Date()
   }

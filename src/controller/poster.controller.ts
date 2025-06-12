@@ -11,12 +11,15 @@ export const createPosterController = async (req: Request, res: Response, next: 
   const introImages: string[] = []
   const contactImages: string[] = []
   const adviseImages: string[] = []
+  const promotionImages: string[] = []
+  const serviceImages: string[] = []
 
-  // Map fieldname -> biến lưu ảnh tương ứng
   const fieldMapping: { field: string; target: string[] }[] = [
     { field: 'images_intro', target: introImages },
     { field: 'images_contact', target: contactImages },
-    { field: 'images_advise', target: adviseImages }
+    { field: 'images_advise', target: adviseImages },
+    { field: 'images_promotion', target: promotionImages },
+    { field: 'images_service', target: serviceImages }
   ]
 
   for (const { field, target } of fieldMapping) {
@@ -34,7 +37,9 @@ export const createPosterController = async (req: Request, res: Response, next: 
   const result = await posterService.createPoster({
     images_intro: introImages,
     images_contact: contactImages,
-    images_advise: adviseImages
+    images_advise: adviseImages,
+    images_promotion: promotionImages,
+    images_service: serviceImages
   })
 
   return res.json(result)
@@ -59,12 +64,15 @@ export const updatePosterController = async (req: Request, res: Response, next: 
   const introImages: string[] = []
   const contactImages: string[] = []
   const adviseImages: string[] = []
+  const promotionImages: string[] = []
+  const serviceImages: string[] = []
 
-  // Map fieldname -> biến lưu ảnh tương ứng
   const fieldMapping: { field: string; target: string[] }[] = [
     { field: 'images_intro', target: introImages },
     { field: 'images_contact', target: contactImages },
-    { field: 'images_advise', target: adviseImages }
+    { field: 'images_advise', target: adviseImages },
+    { field: 'images_promotion', target: promotionImages },
+    { field: 'images_service', target: serviceImages }
   ]
 
   for (const { field, target } of fieldMapping) {
@@ -79,11 +87,12 @@ export const updatePosterController = async (req: Request, res: Response, next: 
     const uploadedUrl = await uploadCloudinary(imageBase64, `poster-${field}-${Date.now()}`)
     target.push(uploadedUrl)
   }
-
   const result = await posterService.updatePoster(id, {
     images_intro: introImages,
     images_contact: contactImages,
-    images_advise: adviseImages
+    images_advise: adviseImages,
+    images_promotion: promotionImages,
+    images_service: serviceImages
   })
 
   return res.json(result)

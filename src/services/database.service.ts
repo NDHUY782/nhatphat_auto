@@ -10,6 +10,7 @@ import ContentAppointment from '~/models/schemas/ContentAppointment.Schema'
 import Intro from '~/models/schemas/Intro.Schema'
 import Logo from '~/models/schemas/Logo.Schema'
 import Poster from '~/models/schemas/Poster.Schema'
+import PriceService from '~/models/schemas/PriceOfService.Schema'
 import Reason from '~/models/schemas/Reason,Schema'
 import RepairCenter from '~/models/schemas/RepairCenter.Schema'
 import Service from '~/models/schemas/Service.Schema'
@@ -141,6 +142,9 @@ class DatabaseService {
   }
   get posters(): Collection<Poster> {
     return this.db.collection(process.env.DB_POSTERS_COLLECTION as string)
+  }
+  get price_services(): Collection<PriceService> {
+    return this.db.collection(process.env.DB_PRICE_SERVICES_COLLECTION as string)
   }
 }
 

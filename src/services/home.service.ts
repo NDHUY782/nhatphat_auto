@@ -139,8 +139,8 @@ class HomeService {
     if (result.deletedCount === 0) throw new Error('Address not found or already deleted')
     return { message: 'Address deleted successfully' }
   }
-  async createBanner(images: string[]) {
-    const banner = new Banner({ images })
+  async createBanner({ images, images_name }: { images: string[]; images_name: string[] }) {
+    const banner = new Banner({ images, images_name })
     await databaseService.banners.insertOne(banner)
     return banner
   }
@@ -149,9 +149,9 @@ class HomeService {
     return await databaseService.banners.find().sort({ created_at: -1 }).toArray()
   }
 
-  async updateBanner(id: string, images: string[]) {
+  async updateBanner({ id, images, images_name }: { id: string; images: string[]; images_name: string[] }) {
     const updated_at = new Date()
-    await databaseService.banners.updateOne({ _id: new ObjectId(id) }, { $set: { images, updated_at } })
+    await databaseService.banners.updateOne({ _id: new ObjectId(id) }, { $set: { images, images_name, updated_at } })
     return await databaseService.banners.findOne({ _id: new ObjectId(id) })
   }
 
