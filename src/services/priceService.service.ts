@@ -4,10 +4,10 @@ import { CreatePriceServiceRequestBody, UpdatePriceServiceRequestBody } from '~/
 import PriceService from '~/models/schemas/PriceOfService.Schema'
 
 class PriceServiceService {
-  async create(data: CreatePriceServiceRequestBody) {
-    const priceService = new PriceService({ ...data, created_at: new Date() })
-    await databaseService.price_services.insertOne(priceService)
-    return priceService
+  async createMany(data: CreatePriceServiceRequestBody[]) {
+    const services = data.map((item) => new PriceService({ ...item, created_at: new Date() }))
+    const result = await databaseService.price_services.insertMany(services)
+    return result
   }
 
   async getAll() {
@@ -18,12 +18,15 @@ class PriceServiceService {
     return await databaseService.price_services.findOne({ _id: new ObjectId(id) })
   }
 
-  async update(id: string, updateData: UpdatePriceServiceRequestBody) {
-    const result = await databaseService.price_services.findOneAndUpdate(
-      { _id: new ObjectId(id) },
-      { $set: { ...updateData, updated_at: new Date() } },
-      { returnDocument: 'after' }
-    )
+  async updateMany(updates: { id: string; data: UpdatePriceServiceRequestBody }[]) {
+    const operations = updates.map(({ id, data }) => ({
+      updateOne: {
+        filter: { _id: new ObjectId(id) },
+        update: { $set: { ...data, updated_at: new Date() } }
+      }
+    }))
+
+    const result = await databaseService.price_services.bulkWrite(operations)
     return result
   }
 

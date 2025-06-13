@@ -11,20 +11,18 @@ export const createServiceController = async (req: Request, res: Response, next:
   const { name, content, price } = req.body as ServiceRequestBody
 
   // ảnh chính
-  const images_name = JSON.parse(req.body.images_name || '[]')
-  const files = (req.files as any).images || [] // nếu dùng multer.fields
+  const files = (req.files as any).images || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-    const fileName = images_name[i] || `service-image-${Date.now()}-${i}`
+    const fileName = `service-image-${Date.now()}-${i}`
     const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
     uploadedUrls.push(uploadedUrl)
   }
 
   // ảnh phụ
-  const extra_images_name = JSON.parse(req.body.extra_images_name || '[]')
   const extra_images_text = JSON.parse(req.body.extra_images_text || '[]')
   const extraFiles = (req.files as any).extra_images || []
   const uploadedExtraUrls: string[] = []
@@ -32,7 +30,7 @@ export const createServiceController = async (req: Request, res: Response, next:
   for (let i = 0; i < extraFiles.length; i++) {
     const file = extraFiles[i]
     const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-    const fileName = extra_images_name[i] || `extra-image-${Date.now()}-${i}`
+    const fileName = `extra-image-${Date.now()}-${i}`
     const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
     uploadedExtraUrls.push(uploadedUrl)
   }
@@ -42,7 +40,6 @@ export const createServiceController = async (req: Request, res: Response, next:
     content,
     price,
     images: uploadedUrls,
-    images_name,
     extra_images: uploadedExtraUrls,
     extra_images_text,
     author_id: new ObjectId(admin_id)
@@ -71,7 +68,6 @@ export const updateServiceController = async (req: Request, res: Response, next:
 
   const { name, content, price } = req.body
 
-  const images_name = JSON.parse(req.body.images_name || '[]')
   const extra_images_text = JSON.parse(req.body.extra_images_text || '[]')
 
   const files = req.files as {
@@ -85,7 +81,7 @@ export const updateServiceController = async (req: Request, res: Response, next:
   for (let i = 0; i < imageFiles.length; i++) {
     const file = imageFiles[i]
     const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-    const fileName = images_name[i] || `service-image-${Date.now()}-${i}`
+    const fileName = `service-image-${Date.now()}-${i}`
     const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
     uploadedImages.push(uploadedUrl)
   }
@@ -108,7 +104,6 @@ export const updateServiceController = async (req: Request, res: Response, next:
     ...(content && { content }),
     ...(price && { price: Number(price) }),
     ...(uploadedImages.length > 0 && { images: uploadedImages }),
-    ...(images_name.length > 0 && { images_name }),
     ...(uploadedExtraImages.length > 0 && { extra_images: uploadedExtraImages }),
     ...(extra_images_text.length > 0 && { extra_images_text })
   }

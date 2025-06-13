@@ -1,12 +1,17 @@
 import { Request, Response, NextFunction } from 'express'
 import { ObjectId } from 'mongodb'
-import { CreatePriceServiceRequestBody } from '~/models/requests/PriceService.request'
+import { CreatePriceServiceRequestBody, UpdatePriceServiceRequestBody } from '~/models/requests/PriceService.request'
 import priceServiceService from '~/services/priceService.service'
 
 export const createPriceServiceController = async (req: Request, res: Response, next: NextFunction) => {
-  const data = req.body as CreatePriceServiceRequestBody
-  const result = await priceServiceService.create(data)
-  return res.status(201).json({ message: 'Created successfully', data: result })
+  const data = req.body as CreatePriceServiceRequestBody[]
+
+  if (!Array.isArray(data) || data.length === 0) {
+    return res.status(400).json({ message: 'Dữ liệu không hợp lệ hoặc rỗng' })
+  }
+
+  const result = await priceServiceService.createMany(data)
+  return res.json(result)
 }
 
 export const getAllPriceServicesController = async (req: Request, res: Response, next: NextFunction) => {
@@ -21,9 +26,14 @@ export const getPriceServiceByIdController = async (req: Request, res: Response,
 }
 
 export const updatePriceServiceController = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params
-  const updated = await priceServiceService.update(id, req.body)
-  return res.json({ message: 'Updated successfully', data: updated })
+  const updates = req.body as { id: string; data: UpdatePriceServiceRequestBody }[]
+
+  if (!Array.isArray(updates) || updates.length === 0) {
+    return res.status(400).json({ message: 'Dữ liệu cập nhật không hợp lệ hoặc rỗng' })
+  }
+
+  const result = await priceServiceService.updateMany(updates)
+  return res.json({ message: 'Updated successfully', result })
 }
 
 export const deletePriceServiceController = async (req: Request, res: Response, next: NextFunction) => {

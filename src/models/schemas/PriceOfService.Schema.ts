@@ -2,7 +2,6 @@ import { ObjectId } from 'mongodb'
 
 export interface PriceServiceType {
   _id?: ObjectId
-  title: string
   name_service: string
   vehicle_type: string
   unit: string
@@ -13,7 +12,6 @@ export interface PriceServiceType {
 
 export default class PriceService {
   _id?: ObjectId
-  title: string
   name_service: string
   vehicle_type: string
   unit: string
@@ -21,9 +19,8 @@ export default class PriceService {
   created_at?: Date
   updated_at?: Date
 
-  constructor({ _id, title, name_service, vehicle_type, unit, price, created_at, updated_at }: PriceServiceType) {
+  constructor({ _id, name_service, vehicle_type, unit, price, created_at, updated_at }: PriceServiceType) {
     this._id = _id || new ObjectId()
-    this.title = title
     this.name_service = name_service
     this.vehicle_type = vehicle_type
     this.unit = unit

@@ -6,7 +6,6 @@ interface ServiceType {
   content: string
   price: string
   images?: string[]
-  images_name?: string[]
   extra_images?: string[]
   extra_images_text?: string[]
   author_id: ObjectId
@@ -20,7 +19,6 @@ export default class Service {
   content: string
   price: string
   images: string[] = []
-  images_name: string[] = []
   extra_images: string[] = []
   extra_images_text: string[] = []
   created_at: Date
@@ -32,7 +30,6 @@ export default class Service {
     content,
     price,
     images,
-    images_name,
     extra_images,
     extra_images_text,
     created_at,
@@ -44,7 +41,6 @@ export default class Service {
     this.content = content
     this.price = price
     this.images = images || []
-    this.images_name = images_name || []
     this.extra_images = extra_images || []
     this.extra_images_text = extra_images_text || []
     this.created_at = created_at || new Date()

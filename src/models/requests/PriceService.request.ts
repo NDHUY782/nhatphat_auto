@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongodb'
 
 export interface CreatePriceServiceRequestBody {
-  title: string
   name_service: string
   vehicle_type: string
   unit: string
@@ -9,7 +8,6 @@ export interface CreatePriceServiceRequestBody {
 }
 
 export interface UpdatePriceServiceRequestBody {
-  title?: string
   name_service?: string
   vehicle_type?: string
   unit?: string

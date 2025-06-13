@@ -13,9 +13,8 @@ const posterService = {
   },
 
   async getPoster() {
-    return posterCollection.findOne({})
+    return posterCollection.findOne({}, { sort: { created_at: -1 } })
   },
-
   async updatePoster(id: string, data: Partial<PosterType>) {
     await posterCollection.updateOne({ _id: new ObjectId(id) }, { $set: { ...data, updated_at: new Date() } })
     return posterCollection.findOne({ _id: new ObjectId(id) })
