@@ -26,6 +26,7 @@ import contactRouter from '~/routes/contact.routes'
 import homeRouter from '~/routes/home.routes'
 import introRouter from '~/routes/intro.routes'
 import posterRouter from '~/routes/poster.routes'
+import priceServiceRouter from '~/routes/priceService.routes'
 
 const router = Router()
 
@@ -90,6 +91,7 @@ app.use('/api/admin/appointments', appointmentRouter)
 app.use('/api/admin/contact', contactRouter)
 app.use('/api/admin/intro', introRouter)
 app.use('/api/admin/poster', posterRouter)
+app.use('/api/admin/price-services', priceServiceRouter)
 app.use(defaultErrorHandler)
 
 const httpServer = createServer(app)
