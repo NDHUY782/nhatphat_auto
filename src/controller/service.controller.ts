@@ -102,7 +102,7 @@ export const updateServiceController = async (req: Request, res: Response, next:
   const updateBody = {
     ...(name && { name }),
     ...(content && { content }),
-    ...(price && { price: Number(price) }),
+    ...(price && { price: price }),
     ...(uploadedImages.length > 0 && { images: uploadedImages }),
     ...(uploadedExtraImages.length > 0 && { extra_images: uploadedExtraImages }),
     ...(extra_images_text.length > 0 && { extra_images_text })
