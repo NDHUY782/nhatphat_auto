@@ -139,8 +139,8 @@ class HomeService {
     if (result.deletedCount === 0) throw new Error('Address not found or already deleted')
     return { message: 'Address deleted successfully' }
   }
-  async createBanner({ images, images_name }: { images: string[]; images_name: string[] }) {
-    const banner = new Banner({ images, images_name })
+  async createBanner({ title, images, images_name }: { title: string; images: string[]; images_name: string[] }) {
+    const banner = new Banner({ title, images, images_name })
     await databaseService.banners.insertOne(banner)
     return banner
   }
