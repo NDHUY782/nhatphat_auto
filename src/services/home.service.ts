@@ -149,7 +149,17 @@ class HomeService {
     return await databaseService.banners.find().sort({ created_at: -1 }).toArray()
   }
 
-  async updateBanner({ id, images, images_name }: { id: string; images: string[]; images_name: string[] }) {
+  async updateBanner({
+    id,
+    title,
+    images,
+    images_name
+  }: {
+    id: string
+    title: string[]
+    images: string[]
+    images_name: string[]
+  }) {
     const updated_at = new Date()
     await databaseService.banners.updateOne({ _id: new ObjectId(id) }, { $set: { images, images_name, updated_at } })
     return await databaseService.banners.findOne({ _id: new ObjectId(id) })

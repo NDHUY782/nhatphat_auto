@@ -225,7 +225,7 @@ export const createBannerController = async (req: Request, res: Response, next: 
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-    const fileName = images_name[i] || `banner-images-${Date.now()}-${i}`
+    const fileName = `banner-images-${Date.now()}-${i}`
     const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
     uploadedUrls.push(uploadedUrl)
   }
@@ -242,6 +242,7 @@ export const getAllBannersController = async (req: Request, res: Response, next:
 
 export const updateBannerController = async (req: Request<ParamsDictionary>, res: Response, next: NextFunction) => {
   const { id } = req.params
+  const { title } = req.body
   const images_name = JSON.parse(req.body.images_name || '[]')
   const files = (req.files as Express.Multer.File[]) || []
   const uploadedUrls: string[] = []
@@ -249,12 +250,13 @@ export const updateBannerController = async (req: Request<ParamsDictionary>, res
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-    const fileName = images_name[i] || `banner-images-${Date.now()}-${i}`
+    const fileName = `banner-images-${Date.now()}-${i}`
     const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
     uploadedUrls.push(uploadedUrl)
   }
 
   const updated = await homeService.updateBanner({
+    title,
     id,
     images: uploadedUrls,
     images_name
