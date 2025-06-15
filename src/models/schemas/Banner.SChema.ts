@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb'
 
 export interface BannerType {
   _id?: ObjectId
-  title: string
+  title: string[]
   images: string[]
   images_name: string[]
   created_at?: Date
@@ -11,7 +11,7 @@ export interface BannerType {
 
 export default class Banner {
   _id?: ObjectId
-  title: string
+  title: string[]
   images: string[]
   images_name: string[]
   created_at?: Date
@@ -19,7 +19,7 @@ export default class Banner {
 
   constructor({ _id, images, title, images_name, created_at, updated_at }: BannerType) {
     this._id = _id || new ObjectId()
-    this.title = title
+    this.title = title || []
     this.images = images || []
     this.images_name = images_name || []
     this.created_at = created_at || new Date()
