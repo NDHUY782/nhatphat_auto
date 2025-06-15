@@ -161,7 +161,10 @@ class HomeService {
     images_name: string[]
   }) {
     const updated_at = new Date()
-    await databaseService.banners.updateOne({ _id: new ObjectId(id) }, { $set: { images, images_name, updated_at } })
+    await databaseService.banners.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { images, title, images_name, updated_at } }
+    )
     return await databaseService.banners.findOne({ _id: new ObjectId(id) })
   }
 
