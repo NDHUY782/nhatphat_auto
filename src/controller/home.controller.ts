@@ -217,7 +217,7 @@ export const deleteAddressController = async (req: Request<ParamsDictionary>, re
   return res.json(result)
 }
 export const createBannerController = async (req: Request, res: Response, next: NextFunction) => {
-  const { title } = req.body
+  const title: string[] = JSON.parse(req.body.title || '[]')
   const images_name = JSON.parse(req.body.images_name || '[]')
   const files = (req.files as Express.Multer.File[]) || []
   const uploadedUrls: string[] = []
@@ -242,7 +242,7 @@ export const getAllBannersController = async (req: Request, res: Response, next:
 
 export const updateBannerController = async (req: Request<ParamsDictionary>, res: Response, next: NextFunction) => {
   const { id } = req.params
-  const { title } = req.body
+  const title: string[] = JSON.parse(req.body.title || '[]')
   const images_name = JSON.parse(req.body.images_name || '[]')
   const files = (req.files as Express.Multer.File[]) || []
   const uploadedUrls: string[] = []
