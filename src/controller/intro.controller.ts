@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { uploadCloudinary } from '~/constants/cloudinary'
+import { removeCloudinary, uploadCloudinary } from '~/constants/cloudinary'
 import introService from '~/services/intro.service'
 
 export const createIntroController = async (req: Request, res: Response, next: NextFunction) => {
@@ -56,6 +56,17 @@ export const updateIntroController = async (req: Request, res: Response, next: N
 }
 
 export const deleteIntroController = async (req: Request, res: Response, next: NextFunction) => {
+  const intro = await introService.getIntroById(req.params.id)
+  if (!intro) return res.status(404).json({ message: 'Intro not found' })
+
+  for (const image of intro.images || []) {
+    try {
+      await removeCloudinary(image)
+    } catch (err) {
+      console.error('Failed to remove intro image:', image)
+    }
+  }
+
   const result = await introService.deleteIntro(req.params.id)
   return res.json(result)
 }

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
-import { uploadCloudinary } from '~/constants/cloudinary'
+import { removeCloudinary, uploadCloudinary } from '~/constants/cloudinary'
 import { BLogParams, BlogRequestBody, Pagination, UpdateBlogRequestBody } from '~/models/requests/BlogRequest'
 import { TokenPayload } from '~/models/requests/User.requests'
 import blogService from '~/services/blog.service'
@@ -102,8 +102,28 @@ export const deleteBlogController = async (
   next: NextFunction
 ) => {
   const blog_id = req.params.blog_id
-  const result = await blogService.deleteBlog(blog_id)
+
+  // Lấy blog trước khi xóa để có images
+  const blog = await blogService.getBlogById(blog_id) // giả sử service này đã có
+  if (!blog) {
+    return res.status(404).json({ msg: 'Blog not found' })
+  }
+
+  // Xoá hình ảnh Cloudinary (nếu có)
+  const images: string[] = blog.images || []
+  for (const imageUrl of images) {
+    try {
+      await removeCloudinary(imageUrl)
+    } catch (err) {
+      console.error('Error removing image from Cloudinary:', err)
+      // không throw ở đây để tiếp tục xoá blog
+    }
+  }
+
+  // Tiến hành xoá blog
+  await blogService.deleteBlog(blog_id)
+
   return res.json({
-    msg: 'Delete blog successfully'
+    msg: 'Delete blog and associated images successfully'
   })
 }

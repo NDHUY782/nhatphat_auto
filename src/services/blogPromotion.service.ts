@@ -32,8 +32,8 @@ class BlogPromotionService {
     return { data, total, page, limit }
   }
 
-  async getBlogPromotionById(blog_id: string) {
-    return await databaseService.blogPromotions.findOne({ _id: new ObjectId(blog_id) })
+  async getBlogPromotionById(blogPromotion_id: string) {
+    return await databaseService.blogPromotions.findOne({ _id: new ObjectId(blogPromotion_id) })
   }
 
   async updateBlogPromotion(blogPromotion_id: string, body: UpdateBlogPromotionRequestBody) {

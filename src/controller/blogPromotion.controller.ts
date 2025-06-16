@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
-import { uploadCloudinary } from '~/constants/cloudinary'
+import { removeCloudinary, uploadCloudinary } from '~/constants/cloudinary'
 import {
   BlogPromotionParams,
   BlogPromotionRequestBody,
@@ -105,17 +105,27 @@ export const updateBlogPromotionController = async (
 
   return res.json(result)
 }
-
 export const deleteBlogPromotionController = async (
   req: Request<ParamsDictionary, any, any, BlogPromotionParams>,
   res: Response,
   next: NextFunction
 ) => {
   const blogPromotion_id = req.params.blogPromotion_id
-  const result = await blogPromotionService.deleteBlogPromotion(blogPromotion_id)
-  if (!result) {
+  const blog_promotion = await blogPromotionService.getBlogPromotionById(blogPromotion_id)
+  if (!blog_promotion) {
     return res.status(404).json({ message: 'Blog promotion not found' })
   }
+
+  for (const image of blog_promotion.images || []) {
+    try {
+      await removeCloudinary(image)
+    } catch (err) {
+      console.error('Failed to remove image:', image)
+    }
+  }
+
+  await blogPromotionService.deleteBlogPromotion(blogPromotion_id)
+
   return res.json({
     message: 'Blog promotion deleted successfully'
   })
