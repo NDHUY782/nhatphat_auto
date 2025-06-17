@@ -15,11 +15,11 @@ const posterRouter = Router()
 posterRouter.post(
   '/',
   upload.fields([
-    { name: 'images_intro' },
-    { name: 'images_contact' },
-    { name: 'images_advise' },
-    { name: 'images_service' },
-    { name: 'images_promotion' }
+    { name: 'images_intro', maxCount: 10 },
+    { name: 'images_contact', maxCount: 10 },
+    { name: 'images_advise', maxCount: 10 },
+    { name: 'images_service', maxCount: 10 },
+    { name: 'images_promotion', maxCount: 10 }
   ]),
   accessTokenValidator,
   wrapAsync(createPosterController)
@@ -30,11 +30,11 @@ posterRouter.get('/', wrapAsync(getPosterController))
 posterRouter.patch(
   '/:id',
   upload.fields([
-    { name: 'images_intro' },
-    { name: 'images_contact' },
-    { name: 'images_advise' },
-    { name: 'images_service' },
-    { name: 'images_promotion' }
+    { name: 'images_intro', maxCount: 10 },
+    { name: 'images_contact', maxCount: 10 },
+    { name: 'images_advise', maxCount: 10 },
+    { name: 'images_service', maxCount: 10 },
+    { name: 'images_promotion', maxCount: 10 }
   ]),
   accessTokenValidator,
   wrapAsync(updatePosterController)

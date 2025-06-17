@@ -13,7 +13,12 @@ import { wrapAsync } from '~/utils/handlers'
 
 const blogPromotionRouter = Router()
 
-blogPromotionRouter.post('/', upload.array('images'), accessTokenValidator, wrapAsync(createBlogPromotionController))
+blogPromotionRouter.post(
+  '/',
+  upload.fields([{ name: 'images', maxCount: 10 }]),
+  accessTokenValidator,
+  wrapAsync(createBlogPromotionController)
+)
 
 blogPromotionRouter.get('/', paginationValidator, wrapAsync(getAllBlogPromotionsController))
 
@@ -21,7 +26,7 @@ blogPromotionRouter.get('/:blogPromotion_id', wrapAsync(getBlogPromotionByIdCont
 
 blogPromotionRouter.put(
   '/:blogPromotion_id',
-  upload.array('images'),
+  upload.fields([{ name: 'images', maxCount: 10 }]),
   accessTokenValidator,
   wrapAsync(updateBlogPromotionController)
 )

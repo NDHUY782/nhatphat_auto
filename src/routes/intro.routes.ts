@@ -13,10 +13,20 @@ import { wrapAsync } from '~/utils/handlers'
 const introRouter = Router()
 
 // ----------- Intro (CRUD) -----------
-introRouter.post('/intros', upload.array('images'), accessTokenValidator, wrapAsync(createIntroController))
+introRouter.post(
+  '/intros',
+  upload.fields([{ name: 'images', maxCount: 10 }]),
+  accessTokenValidator,
+  wrapAsync(createIntroController)
+)
 introRouter.get('/intros', wrapAsync(getAllIntrosController))
 introRouter.get('/intros/:id', wrapAsync(getIntroByIdController))
-introRouter.patch('/intros/:id', upload.array('images'), accessTokenValidator, wrapAsync(updateIntroController))
+introRouter.patch(
+  '/intros/:id',
+  upload.fields([{ name: 'images', maxCount: 10 }]),
+  accessTokenValidator,
+  wrapAsync(updateIntroController)
+)
 introRouter.delete('/intros/:id', accessTokenValidator, wrapAsync(deleteIntroController))
 
 export default introRouter

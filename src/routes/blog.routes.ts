@@ -18,9 +18,19 @@ blogRouter.get('/all', paginationValidator, wrapAsync(getAllBlogsController))
 
 blogRouter.get('/detail/:blog_id', wrapAsync(getBlogByIdController))
 
-blogRouter.post('/', upload.array('images'), accessTokenValidator, wrapAsync(createBlogController))
+blogRouter.post(
+  '/',
+  upload.fields([{ name: 'images', maxCount: 10 }]),
+  accessTokenValidator,
+  wrapAsync(createBlogController)
+)
 
-blogRouter.put('/:blog_id', upload.array('images'), accessTokenValidator, wrapAsync(updateBlogController))
+blogRouter.put(
+  '/:blog_id',
+  upload.fields([{ name: 'images', maxCount: 10 }]),
+  accessTokenValidator,
+  wrapAsync(updateBlogController)
+)
 
 blogRouter.delete('/:blog_id', accessTokenValidator, wrapAsync(deleteBlogController))
 
