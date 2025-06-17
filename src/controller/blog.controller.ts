@@ -73,7 +73,7 @@ export const updateBlogController = async (
   const body = req.body as UpdateBlogRequestBody
   const images_name = JSON.parse(req.body.images_name || '[]')
 
-  const files = req.files as Express.Multer.File[]
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
 
   let uploadedUrls: string[] = []
 
@@ -81,7 +81,7 @@ export const updateBlogController = async (
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
       const imageBase64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
-      const fileName = images_name[i] || `blog-promotion-image-${Date.now()}-${i}`
+      const fileName = `blog-promotion-image-${Date.now()}-${i}`
       const uploadedUrl = await uploadCloudinary(imageBase64, fileName)
       uploadedUrls.push(uploadedUrl)
     }

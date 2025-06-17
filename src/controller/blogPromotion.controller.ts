@@ -81,7 +81,7 @@ export const updateBlogPromotionController = async (
   const body = req.body as UpdateBlogPromotionRequestBody
 
   const images_name = JSON.parse((req.body.images_name as string) || '[]') as string[]
-  const files = req.files as Express.Multer.File[]
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
 
   let uploadedUrls: string[] = []
 

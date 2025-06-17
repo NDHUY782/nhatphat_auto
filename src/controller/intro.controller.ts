@@ -35,7 +35,7 @@ export const getIntroByIdController = async (req: Request, res: Response, next: 
 }
 
 export const updateIntroController = async (req: Request, res: Response, next: NextFunction) => {
-  const files = (req.files as Express.Multer.File[]) || []
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {

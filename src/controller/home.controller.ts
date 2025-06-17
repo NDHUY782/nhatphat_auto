@@ -35,7 +35,7 @@ export const createLogoController = async (req: Request<ParamsDictionary, any>, 
   })
 }
 export const updateLogoController = async (req: Request<ParamsDictionary, any>, res: Response, next: NextFunction) => {
-  const files = (req.files as Express.Multer.File[]) || []
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {
@@ -91,7 +91,7 @@ export const updateContentAppointmentController = async (
   const { title, content } = req.body as UpdateContentAppointmentRequestBody
   const { admin_id } = req.decoded_authorization as TokenPayload
 
-  const files = (req.files as Express.Multer.File[]) || []
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
@@ -156,7 +156,7 @@ export const updateReasonController = async (req: Request<ParamsDictionary>, res
   const { title, content, reason } = req.body as UpdateReasonRequestBody
   const { admin_id } = req.decoded_authorization as TokenPayload
 
-  const files = (req.files as Express.Multer.File[]) || []
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {
@@ -244,7 +244,8 @@ export const updateBannerController = async (req: Request<ParamsDictionary>, res
   const { id } = req.params
   const title: string[] = JSON.parse(req.body.title || '[]')
   const images_name = JSON.parse(req.body.images_name || '[]')
-  const files = (req.files as Express.Multer.File[]) || []
+
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {
