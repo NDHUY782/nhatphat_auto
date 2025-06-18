@@ -19,7 +19,7 @@ export const createBlogPromotionController = async (
   const body = req.body as BlogPromotionRequestBody
 
   const images_name = JSON.parse(req.body.images_name || '[]')
-  const files = req.files as Express.Multer.File[]
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
 
   const uploadedUrls: string[] = []
 
@@ -61,16 +61,6 @@ export const getBlogPromotionByIdController = async (
   }
   return res.json(blog)
 }
-
-// export const updateBlogPromotionController = async (
-//   req: Request<ParamsDictionary, any, UpdateBlogPromotionRequestBody>,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   const blogPromotion_id = req.params.blogPromotion_id
-//   const result = await blogPromotionService.updateBlogPromotion(blogPromotion_id, req.body)
-//   return res.json(result)
-// }
 
 export const updateBlogPromotionController = async (
   req: Request<ParamsDictionary, any, any, UpdateBlogPromotionRequestBody>,

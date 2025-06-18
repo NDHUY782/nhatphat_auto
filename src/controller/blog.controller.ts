@@ -14,8 +14,7 @@ export const createBlogController = async (
 
   const { title, name, content } = req.body as BlogRequestBody
   const images_name = JSON.parse(req.body.images_name || '[]')
-  const files = req.files as Express.Multer.File[]
-
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {

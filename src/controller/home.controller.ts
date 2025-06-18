@@ -16,7 +16,7 @@ import { AddressRequestBody } from '~/models/requests/Address.request'
 import { RepairCenterRequestBody } from '~/models/requests/RepairCenter.request'
 
 export const createLogoController = async (req: Request<ParamsDictionary, any>, res: Response, next: NextFunction) => {
-  const files = (req.files as Express.Multer.File[]) || []
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {
@@ -65,7 +65,7 @@ export const createContentAppointmentController = async (
   const { title, content } = req.body as ContentAppointmentRequestBody
   const { admin_id } = req.decoded_authorization as TokenPayload
 
-  const files = (req.files as Express.Multer.File[]) || []
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
@@ -126,7 +126,7 @@ export const createReasonController = async (req: Request<ParamsDictionary>, res
   const { title, content, reason } = req.body as ReasonRequestBody
   const { admin_id } = req.decoded_authorization as TokenPayload
 
-  const files = (req.files as Express.Multer.File[]) || []
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {
@@ -219,7 +219,7 @@ export const deleteAddressController = async (req: Request<ParamsDictionary>, re
 export const createBannerController = async (req: Request, res: Response, next: NextFunction) => {
   const title: string[] = JSON.parse(req.body.title || '[]')
   const images_name = JSON.parse(req.body.images_name || '[]')
-  const files = (req.files as Express.Multer.File[]) || []
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {

@@ -3,7 +3,7 @@ import { removeCloudinary, uploadCloudinary } from '~/constants/cloudinary'
 import introService from '~/services/intro.service'
 
 export const createIntroController = async (req: Request, res: Response, next: NextFunction) => {
-  const files = (req.files as Express.Multer.File[]) || []
+  const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
   const uploadedUrls: string[] = []
 
   for (let i = 0; i < files.length; i++) {
