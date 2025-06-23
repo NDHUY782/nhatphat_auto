@@ -2,8 +2,9 @@ import { Router } from 'express'
 import {
   createServiceController,
   deleteServiceController,
-  getAllServicesController,
+  // getAllServicesController,
   getServiceByIdController,
+  getServicesByCategoryIdController,
   updateServiceController
 } from '~/controller/service.controller'
 import { upload } from '~/middleware/upload.middleware'
@@ -23,7 +24,8 @@ serviceRouter.post(
   wrapAsync(createServiceController)
 )
 
-serviceRouter.get('/', paginationValidator, wrapAsync(getAllServicesController))
+// serviceRouter.get('/', paginationValidator, wrapAsync(getAllServicesController))
+serviceRouter.get('/category/:category_id', wrapAsync(getServicesByCategoryIdController))
 
 serviceRouter.get('/:service_id', wrapAsync(getServiceByIdController))
 

@@ -8,8 +8,8 @@ import { ServiceParams, ServiceRequestBody } from '~/models/requests/ServiceRequ
 
 export const createServiceController = async (req: Request, res: Response, next: NextFunction) => {
   const { admin_id } = req.decoded_authorization as TokenPayload
-  const { name, content, price } = req.body as ServiceRequestBody
-
+  const { name, content, price, category_id } = req.body as ServiceRequestBody
+  console.log(category_id)
   // ảnh chính
   const files = (req.files as any).images || []
   const uploadedUrls: string[] = []
@@ -42,17 +42,31 @@ export const createServiceController = async (req: Request, res: Response, next:
     images: uploadedUrls,
     extra_images: uploadedExtraUrls,
     extra_images_text,
+    category_id: new ObjectId(category_id),
     author_id: new ObjectId(admin_id)
   })
 
   return res.json(service)
 }
 
-export const getAllServicesController = async (req: Request, res: Response, next: NextFunction) => {
-  const services = await serviceService.getAllServices()
-  return res.json(services)
+// export const getAllServicesController = async (req: Request, res: Response, next: NextFunction) => {
+//   const { category_id } = req.query
+//   const services = await serviceService.getAllServices(category_id?.toString())
+//   return res.json(services)
+// }
+export const getServicesByCategoryIdController = async (
+  req: Request<ParamsDictionary>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { category_id } = req.params
+  try {
+    const services = await serviceService.getServicesByCategoryId(category_id)
+    return res.json(services)
+  } catch (err) {
+    return res.status(400).json({ message: 'Invalid category_id' })
+  }
 }
-
 export const getServiceByIdController = async (
   req: Request<ParamsDictionary, any, ServiceParams>,
   res: Response,
@@ -66,7 +80,7 @@ export const getServiceByIdController = async (
 export const updateServiceController = async (req: Request, res: Response, next: NextFunction) => {
   const { service_id } = req.params
 
-  const { name, content, price } = req.body
+  const { name, content, price, category_id } = req.body
 
   const extra_images_text = JSON.parse(req.body.extra_images_text || '[]')
 
@@ -103,6 +117,7 @@ export const updateServiceController = async (req: Request, res: Response, next:
     ...(name && { name }),
     ...(content && { content }),
     ...(price && { price: price }),
+    ...(category_id && { category_id: new ObjectId(category_id) }),
     ...(uploadedImages.length > 0 && { images: uploadedImages }),
     ...(uploadedExtraImages.length > 0 && { extra_images: uploadedExtraImages }),
     ...(extra_images_text.length > 0 && { extra_images_text })

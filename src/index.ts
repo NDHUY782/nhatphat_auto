@@ -27,6 +27,7 @@ import homeRouter from '~/routes/home.routes'
 import introRouter from '~/routes/intro.routes'
 import posterRouter from '~/routes/poster.routes'
 import priceServiceRouter from '~/routes/priceService.routes'
+import categoryRouter from '~/routes/category.routes'
 
 const router = Router()
 
@@ -87,6 +88,7 @@ app.use('/api/admin/home', homeRouter)
 app.use('/api/admin/blogs', blogRouter)
 app.use('/api/admin/promotion', blogPromotionRouter)
 app.use('/api/admin/services', serviceRouter)
+app.use('/api/admin/category', categoryRouter)
 app.use('/api/admin/appointments', appointmentRouter)
 app.use('/api/admin/contact', contactRouter)
 app.use('/api/admin/intro', introRouter)

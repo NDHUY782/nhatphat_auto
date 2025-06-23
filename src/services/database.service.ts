@@ -5,6 +5,7 @@ import Appointment from '~/models/schemas/Appointment,Schema'
 import Banner from '~/models/schemas/Banner.SChema'
 import Blog from '~/models/schemas/Blog.Schema'
 import BlogPromotion from '~/models/schemas/Blog_Promotion.Schema'
+import Category from '~/models/schemas/Category.Schema'
 import Contact from '~/models/schemas/Contact.Schema'
 import ContentAppointment from '~/models/schemas/ContentAppointment.Schema'
 import Intro from '~/models/schemas/Intro.Schema'
@@ -112,6 +113,9 @@ class DatabaseService {
   }
   get services(): Collection<Service> {
     return this.db.collection(process.env.DB_SERVICES_COLLECTION as string)
+  }
+  get category(): Collection<Category> {
+    return this.db.collection(process.env.DB_CATEGORY_COLLECTION as string)
   }
   get appointments(): Collection<Appointment> {
     return this.db.collection(process.env.DB_APPOINTMENTS_COLLECTION as string)

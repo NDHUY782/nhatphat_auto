@@ -1,7 +1,7 @@
 import { ParamsDictionary, Query } from 'express-serve-static-core'
 import { ObjectId } from 'mongodb'
 
-export interface ServiceRequestBody {
+export interface CategoryRequestBody {
   name: string
   content: string
   price: string
@@ -10,9 +10,8 @@ export interface ServiceRequestBody {
   extra_images?: string[]
   extra_images_text?: string[]
   author_id: ObjectId
-  category_id: ObjectId
 }
-export interface UpdateServiceRequestBody {
+export interface UpdateCategoryRequestBody {
   name?: string
   content?: string
   price?: string
@@ -20,8 +19,7 @@ export interface UpdateServiceRequestBody {
   images_name?: string[]
   extra_images?: string[]
   extra_images_text?: string[]
-  category_id?: ObjectId
 }
-export interface ServiceParams extends ParamsDictionary {
-  service_id: string
+export interface CategoryParams extends ParamsDictionary {
+  category_id: string
 }

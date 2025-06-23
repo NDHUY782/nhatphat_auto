@@ -10,14 +10,102 @@ class ServiceService {
     return result
   }
 
-  async getAllServices() {
-    return databaseService.services.find().sort({ created_at: -1 }).toArray()
+  async getServicesByCategoryId(category_id: string) {
+    const result = await databaseService.services
+      .aggregate([
+        {
+          $match: {
+            category_id: new ObjectId(category_id)
+          }
+        },
+        {
+          $lookup: {
+            from: 'categories',
+            localField: 'category_id',
+            foreignField: '_id',
+            as: 'category'
+          }
+        },
+        {
+          $unwind: '$category'
+        },
+        {
+          $project: {
+            name: 1,
+            content: 1,
+            price: 1,
+            images: 1,
+            extra_images: 1,
+            extra_images_text: 1,
+            created_at: 1,
+            updated_at: 1,
+            author_id: 1,
+            category: {
+              _id: '$category._id',
+              name: '$category.name'
+            }
+          }
+        }
+      ])
+      .toArray()
+
+    return result
   }
 
+  // async getAllServices(category_id?: string) {
+  //   const pipeline: any[] = []
+
+  //   if (category_id) {
+  //     pipeline.push({
+  //       $match: { category_id: new ObjectId(category_id) }
+  //     })
+  //   }
+
+  //   pipeline.push(
+  //     {
+  //       $lookup: {
+  //         from: 'categories',
+  //         localField: 'category_id',
+  //         foreignField: '_id',
+  //         as: 'category'
+  //       }
+  //     },
+  //     {
+  //       $unwind: '$category'
+  //     },
+  //     {
+  //       $sort: { created_at: -1 }
+  //     }
+  //   )
+
+  //   const result = await databaseService.services.aggregate(pipeline).toArray()
+  //   return result
+  // }
+
   async getServiceById(service_id: string) {
-    const result = await databaseService.services.findOne({ _id: new ObjectId(service_id) })
-    if (!result) throw new Error('Service not found')
-    return result
+    const result = await databaseService.services
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(service_id)
+          }
+        },
+        {
+          $lookup: {
+            from: 'categories',
+            localField: 'category_id',
+            foreignField: '_id',
+            as: 'category'
+          }
+        },
+        {
+          $unwind: '$category'
+        }
+      ])
+      .toArray()
+
+    if (!result || result.length === 0) throw new Error('Service not found')
+    return result[0]
   }
 
   async updateService(service_id: string, update: UpdateServiceRequestBody) {

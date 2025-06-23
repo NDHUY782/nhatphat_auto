@@ -1,8 +1,7 @@
 import { ObjectId } from 'mongodb'
 
-interface ServiceType {
+interface CategoryType {
   _id?: ObjectId
-  category_id: ObjectId
   name: string
   content: string
   price: string
@@ -13,9 +12,8 @@ interface ServiceType {
   created_at?: Date
   updated_at?: Date
 }
-export default class Service {
+export default class Category {
   _id?: ObjectId
-  category_id: ObjectId
   author_id: ObjectId
   name: string
   content: string
@@ -27,7 +25,6 @@ export default class Service {
   updated_at: Date
   constructor({
     _id,
-    category_id,
     author_id,
     name,
     content,
@@ -37,9 +34,8 @@ export default class Service {
     extra_images_text,
     created_at,
     updated_at
-  }: ServiceType) {
+  }: CategoryType) {
     this._id = _id || new ObjectId()
-    this.category_id = category_id
     this.author_id = author_id
     this.name = name
     this.content = content
