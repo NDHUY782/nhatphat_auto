@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
   createCategoryController,
   deleteCategoryController,
+  forceDeleteCategoryController,
   getAllCategoriesController,
   getCategoryByIdController,
   updateCategoryController
@@ -36,7 +37,7 @@ categoryRouter.put(
   accessTokenValidator,
   wrapAsync(updateCategoryController)
 )
-
+categoryRouter.delete('/category-force/:category_id', wrapAsync(forceDeleteCategoryController))
 categoryRouter.delete('/:category_id', accessTokenValidator, wrapAsync(deleteCategoryController))
 
 export default categoryRouter

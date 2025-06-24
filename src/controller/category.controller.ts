@@ -202,3 +202,17 @@ export const deleteCategoryController = async (
     message: 'Service deleted successfully'
   })
 }
+
+export const forceDeleteCategoryController = async (
+  req: Request<ParamsDictionary, any, CategoryParams>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { category_id } = req.params
+
+  const result = await categoryService.forceDeleteCategory(category_id)
+  return res.json({
+    deletedCategory: result,
+    deletedServicesCount: result.deletedServicesCount
+  })
+}

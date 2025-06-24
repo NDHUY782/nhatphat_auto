@@ -37,8 +37,32 @@ class CategoryService {
   }
 
   async deleteCategory(category_id: string) {
+    const _id = new ObjectId(category_id)
+    // Kiểm tra xem category có dịch vụ liên kết không
+    const serviceCount = await databaseService.services.countDocuments({ category_id: _id })
+
+    if (serviceCount > 0) {
+      throw new Error('Không thể xóa category vì vẫn còn dịch vụ liên kết.')
+    }
     const result = await databaseService.category.findOneAndDelete({ _id: new ObjectId(category_id) })
     return result
+  }
+  async forceDeleteCategory(category_id: string) {
+    const _id = new ObjectId(category_id)
+
+    // Xóa tất cả các dịch vụ có category_id tương ứng
+    const deleteServicesResult = await databaseService.services.deleteMany({ category_id: _id })
+
+    // Xóa category
+    const deleteCategoryResult = await databaseService.category.findOneAndDelete({ _id })
+    if (!deleteCategoryResult) {
+      throw new Error('Không tìm thấy category để xóa.')
+    }
+
+    return {
+      deleteCategoryResult,
+      deletedServicesCount: deleteServicesResult.deletedCount || 0
+    }
   }
 }
 
