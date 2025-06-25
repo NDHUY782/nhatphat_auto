@@ -52,35 +52,43 @@ class ServiceService {
     return result
   }
 
-  // async getAllServices(category_id?: string) {
-  //   const pipeline: any[] = []
+  async getAllServices() {
+    const pipeline: any[] = [
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'category_id',
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      {
+        $unwind: '$category'
+      },
+      {
+        $sort: { created_at: -1 }
+      },
+      {
+        $project: {
+          _id: 1,
+          category_id: 1,
+          name: 1,
+          content: 1,
+          price: 1,
+          images: 1,
+          extra_images: 1,
+          extra_images_text: 1,
+          author_id: 1,
+          created_at: 1,
+          updated_at: 1,
+          category_name: '$category.name' // Chỉ lấy tên category
+        }
+      }
+    ]
 
-  //   if (category_id) {
-  //     pipeline.push({
-  //       $match: { category_id: new ObjectId(category_id) }
-  //     })
-  //   }
-
-  //   pipeline.push(
-  //     {
-  //       $lookup: {
-  //         from: 'categories',
-  //         localField: 'category_id',
-  //         foreignField: '_id',
-  //         as: 'category'
-  //       }
-  //     },
-  //     {
-  //       $unwind: '$category'
-  //     },
-  //     {
-  //       $sort: { created_at: -1 }
-  //     }
-  //   )
-
-  //   const result = await databaseService.services.aggregate(pipeline).toArray()
-  //   return result
-  // }
+    const result = await databaseService.services.aggregate(pipeline).toArray()
+    return result
+  }
 
   async getServiceById(service_id: string) {
     const result = await databaseService.services

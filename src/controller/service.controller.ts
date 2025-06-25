@@ -49,11 +49,10 @@ export const createServiceController = async (req: Request, res: Response, next:
   return res.json(service)
 }
 
-// export const getAllServicesController = async (req: Request, res: Response, next: NextFunction) => {
-//   const { category_id } = req.query
-//   const services = await serviceService.getAllServices(category_id?.toString())
-//   return res.json(services)
-// }
+export const getAllServicesController = async (req: Request, res: Response, next: NextFunction) => {
+  const services = await serviceService.getAllServices()
+  return res.json(services)
+}
 export const getServicesByCategoryIdController = async (
   req: Request<ParamsDictionary>,
   res: Response,

@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
   createServiceController,
   deleteServiceController,
+  getAllServicesController,
   // getAllServicesController,
   getServiceByIdController,
   getServicesByCategoryIdController,
@@ -24,7 +25,7 @@ serviceRouter.post(
   wrapAsync(createServiceController)
 )
 
-// serviceRouter.get('/', paginationValidator, wrapAsync(getAllServicesController))
+serviceRouter.get('/', paginationValidator, wrapAsync(getAllServicesController))
 serviceRouter.get('/category/:category_id', wrapAsync(getServicesByCategoryIdController))
 
 serviceRouter.get('/:service_id', wrapAsync(getServiceByIdController))
