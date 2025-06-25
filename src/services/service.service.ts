@@ -81,7 +81,7 @@ class ServiceService {
           author_id: 1,
           created_at: 1,
           updated_at: 1,
-          category_name: '$category.name' // Chỉ lấy tên category
+          category_name: '$category.name'
         }
       }
     ]
