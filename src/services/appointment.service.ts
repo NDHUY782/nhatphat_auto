@@ -40,10 +40,44 @@ class AppointmentService {
   async getAllAppointments({ limit, page }: { limit: number; page: number }) {
     const [appointments, total] = await Promise.all([
       databaseService.appointments
-        .find()
-        .sort({ expected_date: 1, expected_time: 1 })
-        .skip((page - 1) * limit)
-        .limit(limit)
+        .aggregate([
+          {
+            $sort: { expected_date: 1, expected_time: 1 }
+          },
+          {
+            $skip: (page - 1) * limit
+          },
+          {
+            $limit: limit
+          },
+          {
+            $lookup: {
+              from: 'categories',
+              localField: 'services',
+              foreignField: '_id',
+              as: 'service'
+            }
+          },
+          {
+            $project: {
+              full_name: 1,
+              phone_number: 1,
+              license_plate: 1,
+              expected_date: 1,
+              expected_time: 1,
+              car_type: 1,
+              center: 1,
+              status: 1,
+              created_at: 1,
+              updated_at: 1,
+              service: {
+                _id: 1,
+                name: 1,
+                price: 1
+              }
+            }
+          }
+        ])
         .toArray(),
       databaseService.appointments.countDocuments()
     ])
