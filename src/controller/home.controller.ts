@@ -188,8 +188,8 @@ export const getReasonController = async (req: Request, res: Response, next: Nex
 }
 
 export const createAddressController = async (req: Request, res: Response, next: NextFunction) => {
-  const { address } = req.body as AddressRequestBody
-  const result = await homeService.createAddress({ address })
+  const { address, name } = req.body as AddressRequestBody
+  const result = await homeService.createAddress({ address, name })
   return res.status(201).json({ message: 'Address created successfully', address: result })
 }
 
@@ -206,8 +206,8 @@ export const getAddressByIdController = async (req: Request<ParamsDictionary>, r
 
 export const updateAddressController = async (req: Request<ParamsDictionary>, res: Response, next: NextFunction) => {
   const { id } = req.params
-  const { address } = req.body as AddressRequestBody
-  const result = await homeService.updateAddress(id, { address })
+  const { address, name } = req.body as AddressRequestBody
+  const result = await homeService.updateAddress(id, { address, name })
   return res.json({ message: 'Address updated successfully', address: result })
 }
 

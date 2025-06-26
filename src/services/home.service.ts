@@ -106,7 +106,7 @@ class HomeService {
   }
 
   async createAddress(data: AddressRequestBody) {
-    const addressEntity = new Address({ address: data.address })
+    const addressEntity = new Address({ address: data.address, name: data.name })
     await databaseService.addresses.insertOne(addressEntity)
     return addressEntity
   }
@@ -129,7 +129,7 @@ class HomeService {
     const updated_at = new Date()
     await databaseService.addresses.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { address: data.address, updated_at } }
+      { $set: { address: data.address, name: data.name, updated_at } }
     )
     return await databaseService.addresses.findOne({ _id: new ObjectId(id) })
   }
