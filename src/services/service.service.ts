@@ -19,6 +19,11 @@ class ServiceService {
           }
         },
         {
+          $sort: {
+            created_at: 1 // Sắp xếp tăng dần theo thời gian tạo
+          }
+        },
+        {
           $lookup: {
             from: 'categories',
             localField: 'category_id',
