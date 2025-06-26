@@ -20,7 +20,7 @@ class ServiceService {
         },
         {
           $sort: {
-            created_at: 1 // Sắp xếp tăng dần theo thời gian tạo
+            created_at: 1
           }
         },
         {
@@ -71,7 +71,7 @@ class ServiceService {
         $unwind: '$category'
       },
       {
-        $sort: { created_at: -1 }
+        $sort: { created_at: 1 }
       },
       {
         $project: {
