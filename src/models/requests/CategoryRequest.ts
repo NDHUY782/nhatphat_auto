@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb'
 
 export interface CategoryRequestBody {
   name: string
+  title: string
   content: string
   price: string
   images: string[]
@@ -13,6 +14,7 @@ export interface CategoryRequestBody {
 }
 export interface UpdateCategoryRequestBody {
   name?: string
+  title?: string
   content?: string
   price?: string
   images?: string[]

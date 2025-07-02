@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb'
 
 export interface ServiceRequestBody {
   name: string
+  title: string
   content: string
   price: string
   images: string[]
@@ -14,6 +15,7 @@ export interface ServiceRequestBody {
 }
 export interface UpdateServiceRequestBody {
   name?: string
+  title?: string
   content?: string
   price?: string
   images?: string[]

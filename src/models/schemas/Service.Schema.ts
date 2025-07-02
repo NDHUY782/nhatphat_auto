@@ -4,6 +4,7 @@ interface ServiceType {
   _id?: ObjectId
   category_id: ObjectId
   name: string
+  title: string
   content: string
   price: string
   images?: string[]
@@ -18,6 +19,7 @@ export default class Service {
   category_id: ObjectId
   author_id: ObjectId
   name: string
+  title: string
   content: string
   price: string
   images: string[] = []
@@ -30,6 +32,7 @@ export default class Service {
     category_id,
     author_id,
     name,
+    title,
     content,
     price,
     images,
@@ -42,6 +45,7 @@ export default class Service {
     this.category_id = category_id
     this.author_id = author_id
     this.name = name
+    this.title = title
     this.content = content
     this.price = price
     this.images = images || []

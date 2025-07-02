@@ -13,7 +13,7 @@ class CategoryService {
   }
 
   async getAllCategories() {
-    return databaseService.category.find().sort({ created_at: -1 }).toArray()
+    return databaseService.category.find().sort({ created_at: 1 }).toArray()
   }
 
   async getCategoryById(category_id: string) {

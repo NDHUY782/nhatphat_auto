@@ -42,7 +42,11 @@ class AppointmentService {
       databaseService.appointments
         .aggregate([
           {
-            $sort: { expected_date: 1, expected_time: 1 }
+            $sort: {
+              created_at: -1,
+              expected_date: 1,
+              expected_time: 1
+            }
           },
           {
             $skip: (page - 1) * limit
