@@ -8,7 +8,7 @@ import { ServiceParams, ServiceRequestBody } from '~/models/requests/ServiceRequ
 
 export const createServiceController = async (req: Request, res: Response, next: NextFunction) => {
   const { admin_id } = req.decoded_authorization as TokenPayload
-  const { name, content, price, category_id } = req.body as ServiceRequestBody
+  const { name, content, price, category_id, title } = req.body as ServiceRequestBody
   console.log(category_id)
   // ảnh chính
   const files = (req.files as any).images || []
@@ -36,6 +36,7 @@ export const createServiceController = async (req: Request, res: Response, next:
   }
 
   const service = await serviceService.createService({
+    title,
     name,
     content,
     price,
@@ -79,7 +80,7 @@ export const getServiceByIdController = async (
 export const updateServiceController = async (req: Request, res: Response, next: NextFunction) => {
   const { service_id } = req.params
 
-  const { name, content, price, category_id } = req.body
+  const { name, content, price, category_id, title } = req.body
 
   const extra_images_text = JSON.parse(req.body.extra_images_text || '[]')
 
@@ -114,6 +115,7 @@ export const updateServiceController = async (req: Request, res: Response, next:
   // Build update body
   const updateBody = {
     ...(name && { name }),
+    ...(title && { title }),
     ...(content && { content }),
     ...(price && { price: price }),
     ...(category_id && { category_id: new ObjectId(category_id) }),
