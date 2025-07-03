@@ -51,7 +51,7 @@ import categoryService from '~/services/category.service'
 // }
 export const createCategoryController = async (req: Request, res: Response, next: NextFunction) => {
   const { admin_id } = req.decoded_authorization as TokenPayload
-  const { name, content, price } = req.body as CategoryRequestBody
+  const { name, title, content, price } = req.body as CategoryRequestBody
 
   // Ảnh chính
   const files = (req.files as { [fieldname: string]: Express.Multer.File[] })['images'] || []
@@ -77,6 +77,7 @@ export const createCategoryController = async (req: Request, res: Response, next
 
   const result = await categoryService.createCategory({
     name,
+    title,
     content,
     price,
     images: uploadedUrls,
@@ -105,7 +106,7 @@ export const getCategoryByIdController = async (
 
 export const updateCategoryController = async (req: Request, res: Response, next: NextFunction) => {
   const { category_id } = req.params
-  const { name, content, price } = req.body
+  const { name, title, content, price } = req.body
   const extra_images_text = JSON.parse(req.body.extra_images_text || '[]')
 
   const files = req.files as { [fieldname: string]: Express.Multer.File[] }
@@ -133,6 +134,7 @@ export const updateCategoryController = async (req: Request, res: Response, next
   // Body cập nhật
   const updateBody: any = {}
   if (name) updateBody.name = name
+  if (title) updateBody.title = title
   if (content) updateBody.content = content
   if (price) updateBody.price = price
   if (uploadedImages.length > 0) updateBody.images = uploadedImages
